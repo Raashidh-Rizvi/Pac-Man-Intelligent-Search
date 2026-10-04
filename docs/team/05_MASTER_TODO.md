@@ -1,226 +1,96 @@
 # IT3012 Intelligent Agents — Master To-Do List
 
 ## A. Team Setup
-
-- [ ] Confirm all 4 members.
-- [ ] Record names and student IDs.
-- [ ] Assign Member 1-4.
-- [ ] Create communication channel.
-- [ ] Agree branch naming.
-- [ ] Agree PR/review process.
-- [ ] Agree testing workflow.
-- [ ] Agree that everyone learns Q1-Q7.
+- [x] Confirm all 4 members.
+- [x] Record names and student IDs.
+- [x] Assign Member 1-4.
+- [x] Create communication channel.
+- [x] Agree branch naming.
+- [x] Agree PR/review process.
+- [x] Agree testing workflow.
+- [x] Agree that everyone learns Q1-Q7.
 
 ## B. Environment
-
-For every member:
-
-- [ ] Install Python 3.9-3.11.
-- [ ] Create Conda environment.
-- [ ] Activate environment.
-- [ ] Install NumPy.
-- [ ] Install Matplotlib.
-- [ ] Run `python pacman.py`.
-- [ ] Verify Pac-Man is playable.
-- [ ] Record environment details.
+- [x] Install Python 3.9-3.11.
+- [x] Create Virtual environment (`.venv`).
+- [x] Activate environment.
+- [x] Install required dependencies.
+- [x] Run `python pacman.py`.
+- [x] Verify Pac-Man is playable.
+- [x] Record environment details in `docs/ENVIRONMENT.md`.
 
 ## C. Repository Setup
+- [x] Create local / public GitHub repository structure.
+- [x] Add starter project files.
+- [x] Create `main` branch.
+- [x] Create `.gitignore`.
+- [x] Create `README.md`.
+- [x] Create `docs/` folder structure (`project/`, `report/`, `team/`, `testing/`, `viva/`).
+- [x] Add group plan (`00_GROUP_PARALLEL_PLAN.md`).
+- [x] Add member responsibility files.
+- [x] Add `TEST_RESULTS.md`.
+- [x] Add `AI_USAGE.md`.
+- [x] Add `REPORT_OUTLINE.md`.
+- [x] Add `VIVA_NOTES.md`.
 
-- [ ] Create public GitHub repository.
-- [ ] Add all four members.
-- [ ] Add starter project.
-- [ ] Create `main` branch.
-- [ ] Create `.gitignore`.
-- [ ] Create `README.md`.
-- [ ] Create `docs/` folder.
-- [ ] Add group plan.
-- [ ] Add member responsibility files.
-- [ ] Add `TEST_RESULTS.md`.
-- [ ] Add `AI_USAGE.md`.
-- [ ] Add `REPORT_OUTLINE.md`.
-- [ ] Add `VIVA_NOTES.md`.
+## D. Baseline Verification & Algorithmic Core
+- [x] Inspect `search.py` interface.
+- [x] Inspect `searchAgents.py` problem classes.
+- [x] Read `util.py` data structures (`Stack`, `Queue`, `PriorityQueue`).
+- [x] Read `autograder.py`.
+- [x] Run autograder verification suite.
 
-## D. Baseline Verification
+## E. Question 1 — Depth First Search (DFS)
+- [x] Implement DFS in `src/search.py`.
+- [x] Use `util.Stack`.
+- [x] Track visited states to prevent infinite loops.
+- [x] Preserve function signature.
+- [x] Run Q1 autograder (PASSED).
 
-- [ ] Inspect `search.py`.
-- [ ] Inspect `searchAgents.py`.
-- [ ] Read `util.py`.
-- [ ] Read `autograder.py`.
-- [ ] Run Q1 baseline.
-- [ ] Run Q2 baseline.
-- [ ] Run Q3 baseline.
-- [ ] Run Q4 baseline.
-- [ ] Run Q5 baseline.
-- [ ] Run Q6 baseline.
-- [ ] Run Q7 baseline.
-- [ ] Record baseline output.
+## F. Question 2 & 3 — BFS + UCS
+- [x] Implement BFS in `src/search.py` using `util.Queue` (PASSED).
+- [x] Implement UCS in `src/search.py` using `util.PriorityQueue` with path cost (PASSED).
 
-## E. Member 1 — Q1 DFS
+## G. Question 4 & 5 — A* Search + Corners Problem
+- [x] Implement A* Search in `src/search.py` using `PriorityQueue` with $g(n) + h(n)$ (PASSED).
+- [x] Implement `CornersProblem` in `src/searchAgents.py` with state $(pos, visitedCorners)$ (PASSED).
 
-- [ ] Implement DFS.
-- [ ] Use `util.Stack`.
-- [ ] Track expanded states.
-- [ ] Preserve function signature.
-- [ ] Run Q1 autograder.
-- [ ] Capture Q1 screenshot.
-- [ ] Peer review.
-- [ ] Open PR.
-- [ ] Merge PR.
-- [ ] Write Q1 report section.
+## H. Question 6 & 7 — Corners & Food Heuristics
+- [x] Implement `cornersHeuristic` in `src/searchAgents.py` (Admissible & Consistent) (PASSED).
+- [x] Implement `foodHeuristic` in `src/searchAgents.py` (Admissible & Consistent) (PASSED).
 
-## F. Member 2 — Q2 BFS + Q3 UCS
+## I. User Interface & Interactive Enhancements
+- [x] Modern Cyber Dark Neon Theme in `graphicsDisplay.py`.
+- [x] Interactive Bottom Toolbar with Buttons: `BFS`, `DFS`, `UCS`, `A* Search`.
+- [x] Added `🔄 Retry` button to reset maze back to starting state.
+- [x] Added `🧪 Autograder` button to execute test suite directly from UI.
+- [x] Non-closing persistent window after completing game/path.
+- [x] GUI Error Pop-up dialog (`messagebox.showerror`) when an algorithm is disconnected or fails.
 
-- [ ] Implement BFS.
-- [ ] Use `util.Queue`.
-- [ ] Run Q2.
-- [ ] Capture Q2 screenshot.
-- [ ] Implement UCS.
-- [ ] Use `util.PriorityQueue`.
-- [ ] Use accumulated path cost.
-- [ ] Run Q3.
-- [ ] Capture Q3 screenshot.
-- [ ] Peer review.
-- [ ] Open PR.
-- [ ] Merge PR.
-- [ ] Write Q2/Q3 report sections.
+---
 
-## G. Member 3 — Q4 A* + Q5 Corners
+## PENDING / REMAINING TO-DO ITEMS
 
-- [ ] Implement A*.
-- [ ] Use `g(n)+h(n)` priority.
-- [ ] Run Q4.
-- [ ] Capture Q4 screenshot.
-- [ ] Agree Q5 state contract with Member 4.
-- [ ] Implement `getStartState`.
-- [ ] Implement `isGoalState`.
-- [ ] Implement `getSuccessors`.
-- [ ] Implement successor bookkeeping.
-- [ ] Keep state compact and hashable.
-- [ ] Do not store wall grid in the state.
-- [ ] Do not store the whole GameState in the state.
-- [ ] Run Q5.
-- [ ] Capture Q5 screenshot.
-- [ ] Peer review.
-- [ ] Open PR.
-- [ ] Merge PR.
-- [ ] Write Q4/Q5 report sections.
+### J. Git Evidence & Screenshots
+- [ ] Capture final autograder pass screenshots for Q1–Q7.
+- [ ] Capture Git commit history and contribution graph screenshots.
+- [ ] Verify public repository accessibility.
 
-## H. Member 4 — Q6 + Q7 Heuristics
+### K. Final Report Documentation
+- [ ] Finalize section write-ups (<= 200 words per question explanation).
+- [ ] Insert Q1–Q7 screenshots into `docs/report/REPORT_OUTLINE.md`.
+- [ ] Add individual team member contribution table.
+- [ ] Export final PDF report.
 
-- [ ] Understand Q5 state contract.
-- [ ] Design Q6 heuristic.
-- [ ] Prove/justify admissibility.
-- [ ] Prove/justify consistency.
-- [ ] Check non-negativity.
-- [ ] Check goal state returns zero.
-- [ ] Verify optimality.
-- [ ] Run Q6.
-- [ ] Record `mediumCorners` node expansion.
-- [ ] Optimize Q6 only after correctness.
-- [ ] Design Q7 heuristic.
-- [ ] Prove/justify admissibility.
-- [ ] Prove/justify consistency.
-- [ ] Run Q7.
-- [ ] Record `trickySearch` node expansion.
-- [ ] Optimize Q7 only after correctness.
-- [ ] Capture screenshots.
-- [ ] Peer review.
-- [ ] Open PR.
-- [ ] Merge PR.
-- [ ] Write Q6/Q7 report sections.
+### L. AI Usage Documentation
+- [ ] Review `docs/report/AI_USAGE.md` for completeness.
+- [ ] Include AI declaration in final PDF report.
 
-## I. Integration
+### M. Viva Preparation
+- [ ] Review `docs/viva/VIVA_NOTES.md`.
+- [ ] Practice 6-minute group viva walkthrough (explaining DFS, BFS, UCS, A*, Q5 state, Q6/Q7 heuristics).
 
-- [ ] Pull latest `main`.
-- [ ] Merge all approved PRs.
-- [ ] Resolve conflicts carefully.
-- [ ] Do not overwrite another member's implementation.
-- [ ] Run Q1.
-- [ ] Run Q2.
-- [ ] Run Q3.
-- [ ] Run Q4.
-- [ ] Run Q5.
-- [ ] Run Q6.
-- [ ] Run Q7.
-- [ ] Run full autograder.
-- [ ] Verify required names/signatures.
-- [ ] Verify protected/reference files were not unintentionally changed.
-
-## J. Git Evidence
-
-- [ ] Each member has meaningful commits.
-- [ ] Commit messages describe actual work.
-- [ ] Contributions occur throughout the lifecycle.
-- [ ] Each member has implementation contribution.
-- [ ] Each member has review/support contribution.
-- [ ] Capture commit-history screenshot.
-- [ ] Capture contribution-graph screenshot.
-- [ ] Capture PR/merge evidence.
-- [ ] Verify repository is public.
-
-## K. Report
-
-- [ ] Cover page.
-- [ ] Group member information.
-- [ ] Setup information.
-- [ ] Q1 explanation <= 200 words.
-- [ ] Q1 autograder screenshot.
-- [ ] Q2 explanation <= 200 words.
-- [ ] Q2 screenshot.
-- [ ] Q3 explanation <= 200 words.
-- [ ] Q3 screenshot.
-- [ ] Q4 explanation <= 200 words.
-- [ ] Q4 screenshot.
-- [ ] Q5 explanation <= 200 words.
-- [ ] Q5 screenshot.
-- [ ] Q6 explanation <= 200 words.
-- [ ] Q6 screenshot.
-- [ ] Q7 explanation <= 200 words.
-- [ ] Q7 screenshot.
-- [ ] Public Git repository URL.
-- [ ] Git contribution evidence.
-- [ ] Individual contribution table.
-- [ ] AI usage declaration.
-- [ ] Export PDF.
-- [ ] Check PDF visually.
-
-## L. AI Documentation
-
-- [ ] Record AI tools actually used.
-- [ ] Record exact prompts.
-- [ ] Record whether AI was used for understanding, ideas, code, debugging, or writing.
-- [ ] Validate AI suggestions against the assignment/autograder.
-- [ ] Include the declaration in the report.
-
-## M. Viva
-
-Every member:
-
-- [ ] Explain DFS.
-- [ ] Explain BFS.
-- [ ] Explain UCS.
-- [ ] Explain A*.
-- [ ] Explain Stack/Queue/PriorityQueue.
-- [ ] Explain graph-search expansion.
-- [ ] Explain Q5 state representation.
-- [ ] Explain Q6 admissibility.
-- [ ] Explain Q6 consistency.
-- [ ] Explain Q7 admissibility.
-- [ ] Explain Q7 consistency.
-- [ ] Explain node expansion.
-- [ ] Trace code line-by-line.
-- [ ] Explain another member's question.
-- [ ] Practice six-minute viva.
-
-## N. Final Submission
-
-- [ ] Final full autograder pass.
-- [ ] Final Q1-Q7 screenshots.
-- [ ] Final Git evidence.
-- [ ] Final report PDF.
-- [ ] Create code ZIP.
-- [ ] ZIP contains ONLY `search.py` and `searchAgents.py`.
-- [ ] Use correct Group ID in filenames.
-- [ ] Open ZIP and verify contents.
-- [ ] Open PDF and verify contents.
-- [ ] Submit both items once per group.
+### N. Final Submission Packaging
+- [ ] Create submission ZIP containing `search.py` and `searchAgents.py`.
+- [ ] Verify ZIP contents contain ONLY `search.py` and `searchAgents.py`.
+- [ ] Submit PDF Report + Submission ZIP on LMS.

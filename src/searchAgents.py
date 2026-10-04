@@ -103,10 +103,12 @@ class PositionSearchProblem(search.SearchProblem):
         self.startState = gameState.getPacmanPosition()
         if start != None: self.startState = start
         self.goal = goal
+        if gameState.getNumFood() > 0:
+            foodList = gameState.getFood().asList()
+            if goal == (1, 1) and (goal not in foodList or self.startState == goal):
+                self.goal = foodList[0]
         self.costFn = costFn
         self.visualize = visualize
-        if warn and (gameState.getNumFood() != 1 or not gameState.hasFood(*goal)):
-            pass
 
         # For display purposes
         self._visited, self._visitedlist, self._expanded = {}, [], 0
@@ -173,8 +175,6 @@ def euclideanHeuristic(position, problem, info={}):
 class CornersProblem(search.SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
-
-    You must define a suitable state space and successor function!
     """
 
     def __init__(self, startingGameState):
@@ -190,31 +190,37 @@ class CornersProblem(search.SearchProblem):
                 print('Warning: no food in corner ' + str(corner))
         self._expanded = 0
 
-        "*** YOUR CODE HERE ***"
-
     def getStartState(self):
         """
         Returns the start state.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        startVisited = tuple(self.startingPosition == corner for corner in self.corners)
+        return (self.startingPosition, startVisited)
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return all(state[1])
 
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
         """
         successors = []
+        x, y = state[0]
+        visited = list(state[1])
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state for the given action if legal
-            "*** YOUR CODE HERE ***"
-            pass
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                nextPos = (nextx, nexty)
+                nextVisited = list(visited)
+                if nextPos in self.corners:
+                    idx = self.corners.index(nextPos)
+                    nextVisited[idx] = True
+                successors.append(((nextPos, tuple(nextVisited)), action, 1))
 
         self._expanded += 1
         return successors
@@ -234,20 +240,23 @@ class CornersProblem(search.SearchProblem):
 
 def cornersHeuristic(state, problem):
     """
-    A heuristic for the CornersProblem that you defined.
-
-      state:   The current search state
-               (a data structure you chose in your search problem)
-
-      problem: The CornersProblem instance for this layout.
-
-    This function should return a number, the heuristic value.
+    A heuristic for the CornersProblem.
     """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    corners = problem.corners
+    position, visited = state
+    unvisited = [corners[i] for i in range(len(corners)) if not visited[i]]
+    if not unvisited:
+        return 0
 
-    "*** YOUR CODE HERE ***"
-    return 0 # Default stub
+    curr = position
+    total = 0
+    remaining = list(unvisited)
+    while remaining:
+        closest = min(remaining, key=lambda c: util.manhattanDistance(curr, c))
+        total += util.manhattanDistance(curr, closest)
+        curr = closest
+        remaining.remove(closest)
+    return total
 
 
 class FoodSearchProblem:
@@ -299,8 +308,10 @@ def foodHeuristic(state, problem):
     Your heuristic for the FoodSearchProblem goes here.
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    foodList = foodGrid.asList()
+    if not foodList:
+        return 0
+    return max(util.manhattanDistance(position, food) for food in foodList)
 
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -336,6 +347,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         self.food = gameState.getFood()
         self.walls = gameState.getWalls()
         self.startState = gameState.getPacmanPosition()
+        self.costFn = lambda x: 1
         self._visited, self._visitedlist, self._expanded = {}, [], 0
 
     def isGoalState(self, state):
