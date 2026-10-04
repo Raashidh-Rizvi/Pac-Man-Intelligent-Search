@@ -990,28 +990,70 @@ Before uploading:
 # 24. Recommended Repository Structure
 
 ```text
-Pac-Man-Intelligent-Search/
+SE3062-Pacman-Intelligent-Search/
+│
+├── README.md
+├── .gitignore
+├── requirements.txt
 │
 ├── search.py
 ├── searchAgents.py
-├── util.py
+│
 ├── pacman.py
 ├── game.py
+├── util.py
+├── graphicsDisplay.py
+├── textDisplay.py
+│
 ├── autograder.py
+├── testParser.py
+│
 ├── test_cases/
+│   ├── q1/
+│   ├── q2/
+│   ├── q3/
+│   ├── q4/
+│   ├── q5/
+│   ├── q6/
+│   └── q7/
 │
 ├── docs/
-│   ├── 00_GROUP_PARALLEL_PLAN.md
-│   ├── 01_MEMBER_1_RESPONSIBILITY.md
-│   ├── 02_MEMBER_2_RESPONSIBILITY.md
-│   ├── 03_MEMBER_3_RESPONSIBILITY.md
-│   ├── 04_MEMBER_4_RESPONSIBILITY.md
-│   ├── 05_MASTER_TODO.md
-│   ├── SETUP.md
-│   ├── TEST_RESULTS.md
-│   ├── AI_USAGE.md
-│   ├── REPORT_OUTLINE.md
-│   ├── VIVA_NOTES.md
+│   │
+│   ├── project/
+│   │   ├── PROJECT_OVERVIEW.md
+│   │   ├── GOALS_AND_OBJECTIVES.md
+│   │   ├── REQUIREMENTS.md
+│   │   └── ARCHITECTURE.md
+│   │
+│   ├── team/
+│   │   ├── 00_GROUP_PARALLEL_PLAN.md
+│   │   ├── 01_MEMBER_1_RESPONSIBILITY.md
+│   │   ├── 02_MEMBER_2_RESPONSIBILITY.md
+│   │   ├── 03_MEMBER_3_RESPONSIBILITY.md
+│   │   ├── 04_MEMBER_4_RESPONSIBILITY.md
+│   │   └── 05_MASTER_TODO.md
+│   │
+│   ├── testing/
+│   │   ├── SETUP.md
+│   │   ├── TEST_RESULTS.md
+│   │   ├── REGRESSION_TESTING.md
+│   │   └── PERFORMANCE_RESULTS.md
+│   │
+│   ├── git/
+│   │   ├── GIT_WORKFLOW.md
+│   │   ├── BRANCH_STRATEGY.md
+│   │   └── CONTRIBUTION_GUIDE.md
+│   │
+│   ├── report/
+│   │   ├── REPORT_OUTLINE.md
+│   │   ├── CONTRIBUTIONS.md
+│   │   └── AI_USAGE.md
+│   │
+│   ├── viva/
+│   │   ├── VIVA_NOTES.md
+│   │   ├── ALGORITHM_QA.md
+│   │   └── CODE_WALKTHROUGH.md
+│   │
 │   └── screenshots/
 │       ├── q1/
 │       ├── q2/
@@ -1022,9 +1064,11 @@ Pac-Man-Intelligent-Search/
 │       ├── q7/
 │       └── git/
 │
-├── README.md
-├── requirements.txt
-└── .gitignore
+└── submission/
+    ├── README.md
+    └── final/
+        ├── Group_<GROUP_ID>_Report.pdf
+        └── Group_<GROUP_ID>_Code.zip
 ```
 
 ---
