@@ -1,17 +1,16 @@
 # Environment & Testing Setup Guide
 
-## Prerequisites
-- Python 3.11 installed and added to PATH.
+For full installation and environment configuration guidelines, see [SETUP.md](../SETUP.md).
 
-## Execution Commands
+## Quick Execution Summary
 
 ### Run Full Autograder
-```bash
+```powershell
 python autograder.py
 ```
 
 ### Run Individual Question Autograder
-```bash
+```powershell
 python autograder.py -q q1
 python autograder.py -q q2
 python autograder.py -q q3
@@ -21,8 +20,8 @@ python autograder.py -q q6
 python autograder.py -q q7
 ```
 
-### Visual Pac-Man Testing
-```bash
+### Visual Pac-Man Agent Testing
+```powershell
 python pacman.py -l tinyMaze -p SearchAgent -a fn=dfs
 python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
 python pacman.py -l bigMaze -p SearchAgent -a fn=ucs

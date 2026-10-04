@@ -10,6 +10,63 @@
 
 ---
 
+## Environment
+
+Python 3.9–3.11
+
+Required packages:
+- NumPy
+- Matplotlib
+
+## Installation
+
+### Conda Setup (Recommended)
+```powershell
+conda create -n se3062-pacman python=3.11
+conda activate se3062-pacman
+pip install -r requirements.txt
+```
+
+### Standard Pip / Venv Setup
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+## Run Pac-Man
+
+```powershell
+python pacman.py
+```
+
+## Run Tests
+
+```powershell
+python autograder.py -q q1
+python autograder.py -q q2
+python autograder.py -q q3
+python autograder.py -q q4
+python autograder.py -q q5
+python autograder.py -q q6
+python autograder.py -q q7
+python autograder.py
+```
+
+## Project Files
+
+- `search.py` → Q1–Q4
+- `searchAgents.py` → Q5–Q7
+- `util.py` → provided utilities / read-only
+- `pacman.py` → Pac-Man runtime
+- `game.py` → game framework
+- `autograder.py` → automated testing
+- `test_cases/` → provided tests
+- `requirements.txt` → third-party dependencies
+- `docs/` → project/team/testing documentation
+
+---
+
 ## 1. Project Overview
 
 This project applies classical Artificial Intelligence search techniques to the supplied Pac-Man environment.

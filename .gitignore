@@ -1,4 +1,4 @@
-# Python
+# Python artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,7 +7,8 @@ __pycache__/
 env/
 venv/
 ENV/
-.venv
+.venv/
+.env
 
 # IDE & Editors
 .vscode/
@@ -15,11 +16,20 @@ ENV/
 *.swp
 *.swo
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Output & Temp artifacts
+# Submission artifacts
 submission/final/*.zip
 submission/final/*.pdf
 !submission/README.md
+
+# Explicitly ensure core assignment and project files are never ignored
+!search.py
+!searchAgents.py
+!autograder.py
+!test_cases/
+!requirements.txt
+!README.md
+!docs/
