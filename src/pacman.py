@@ -25,6 +25,96 @@ from util import nearestPoint
 from util import manhattanDistance
 import util, layout, sys, os, random
 
+# ---------------------------------------------------------------------------
+# KeyboardAgent – lets a human player control Pac-Man via arrow keys / WASD.
+# ---------------------------------------------------------------------------
+from game import Agent, Directions
+
+PACMAN_MOVE_NORTH = {'Up', 'w', 'W'}
+PACMAN_MOVE_SOUTH = {'Down', 's', 'S'}
+PACMAN_MOVE_EAST  = {'Right', 'd', 'D'}
+PACMAN_MOVE_WEST  = {'Left', 'a', 'A'}
+PACMAN_STOP       = {'space', 'q', 'Q'}
+
+class KeyboardAgent(Agent):
+    """
+    An agent controlled by keyboard or UI buttons at the bottom of the screen.
+    Click BFS, DFS, UCS, or A* Search to execute automated search paths,
+    or use Arrow keys / WASD to move manually.
+    """
+    def __init__(self, index=0):
+        super().__init__(index)
+        self.lastMove = Directions.STOP
+        self.keys = set()
+        self.planned_actions = []
+
+    def getAction(self, state):
+        from graphicsUtils import get_clicked_algo, keys_waiting, keys_pressed
+        import graphicsUtils as _gu
+
+        # Pump the Tkinter event queue so key/button events are processed
+        try:
+            if _gu._root_window is not None:
+                _gu._root_window.update()
+        except Exception:
+            pass
+
+        # Check if an algorithm button was clicked at the bottom toolbar
+        clicked_algo = get_clicked_algo()
+        if clicked_algo is not None:
+            import search
+            from searchAgents import PositionSearchProblem
+            problem = PositionSearchProblem(state)
+
+            if clicked_algo == 'bfs':
+                self.planned_actions = search.bfs(problem)
+            elif clicked_algo == 'dfs':
+                self.planned_actions = search.dfs(problem)
+            elif clicked_algo == 'ucs':
+                self.planned_actions = search.ucs(problem)
+            elif clicked_algo == 'astar':
+                from searchAgents import manhattanHeuristic
+                self.planned_actions = search.aStarSearch(problem, manhattanHeuristic)
+
+        # If we have planned actions from an algorithm click, execute them sequentially!
+        if self.planned_actions:
+            move = self.planned_actions.pop(0)
+            legal = state.getLegalPacmanActions()
+            if move in legal:
+                self.lastMove = move
+                return move
+
+        keys = set(keys_waiting()) | set(keys_pressed())
+        if keys:
+            self.keys = keys
+
+        legal = state.getLegalPacmanActions()
+        move = self.getMove(self.keys)
+
+        if move == Directions.STOP:
+            # Try the last successful direction (smoother experience)
+            if self.lastMove in legal:
+                move = self.lastMove
+
+        if move not in legal:
+            move = Directions.STOP
+
+        self.lastMove = move
+        return move
+
+    def getMove(self, keys):
+        if keys & PACMAN_MOVE_NORTH:
+            return Directions.NORTH
+        if keys & PACMAN_MOVE_SOUTH:
+            return Directions.SOUTH
+        if keys & PACMAN_MOVE_EAST:
+            return Directions.EAST
+        if keys & PACMAN_MOVE_WEST:
+            return Directions.WEST
+        return Directions.STOP
+
+# ---------------------------------------------------------------------------
+
 class AgentState:
     """
     AgentStates hold the state of an agent (position, direction, etc).
@@ -234,6 +324,15 @@ class PacmanRules:
                 ghostState.scaredTimer = 40
     consume = staticmethod( consume )
 
+    def process( state, game ):
+        """
+        Called by Game.run() after every agent move.
+        All game logic (action application, death checks, scoring) is already
+        handled inside GameState.generateSuccessor(), so this is a no-op.
+        """
+        pass
+    process = staticmethod( process )
+
 class GhostRules:
     GHOST_SPEED=1.0
 
@@ -370,7 +469,8 @@ def readCommand( argv ):
     if ghostType is None:
         import ghostAgents
         ghostType = util.lookup(options.ghost, ghostAgents.__dict__)
-    args['ghosts'] = [ghostType( i+1 ) for i in range( options.numGhosts )]
+    numGhosts = min(options.numGhosts, args['layout'].getNumGhosts())
+    args['ghosts'] = [ghostType( i+1 ) for i in range( numGhosts )]
 
     # Choose a display format
     if options.quietTextGraphics:

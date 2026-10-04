@@ -29,7 +29,56 @@ _canvas_x = None
 _canvas_y = None
 _canvas_color = None
 
-def begin_graphics(width=640, height=480, color=formatColor(0, 0, 0), title=None):
+def formatColor(r, g, b):
+    return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
+
+BACKGROUND_COLOR = formatColor(0, 0, 0)
+
+# Keyboard state
+_keys_waiting = set()   # keys pressed since last call to keys_waiting()
+_keys_held = set()      # keys currently held down
+
+def keys_waiting():
+    """Return keys pressed since the last call and clear the queue."""
+    global _keys_waiting
+    keys = _keys_waiting
+    _keys_waiting = set()
+    return keys
+
+def keys_pressed():
+    """Return the set of keys currently held down."""
+    return _keys_held
+
+def clear_keys():
+    """Clear all key state."""
+    global _keys_waiting, _keys_held
+    _keys_waiting = set()
+    _keys_held = set()
+
+def _on_key_press(event):
+    global _keys_waiting, _keys_held
+    _keys_held.add(event.keysym)
+    _keys_waiting.add(event.keysym)
+
+def _on_key_release(event):
+    global _keys_held
+    _keys_held.discard(event.keysym)
+
+_last_clicked_algo = None
+
+def get_clicked_algo():
+    global _last_clicked_algo
+    algo = _last_clicked_algo
+    _last_clicked_algo = None
+    return algo
+
+def set_clicked_algo(algo):
+    global _last_clicked_algo
+    _last_clicked_algo = algo
+
+def begin_graphics(width=640, height=480, color=None, title=None):
+    if color is None:
+        color = BACKGROUND_COLOR
     global _root_window, _canvas, _canvas_x, _canvas_y, _canvas_color
     if tkinter is None:
         return
@@ -44,6 +93,9 @@ def begin_graphics(width=640, height=480, color=formatColor(0, 0, 0), title=None
         _canvas_x = width
         _canvas_y = height
         _canvas_color = color
+        _root_window.bind('<KeyPress>', _on_key_press)
+        _root_window.bind('<KeyRelease>', _on_key_release)
+        _root_window.focus_set()
     except Exception:
         _root_window = None
         _canvas = None
@@ -126,5 +178,3 @@ def remove_from_screen(id):
     except Exception:
         pass
 
-def formatColor(r, g, b):
-    return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))

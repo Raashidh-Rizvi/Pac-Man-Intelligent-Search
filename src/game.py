@@ -224,12 +224,14 @@ class GameStateData:
             self.layout = prevState.layout
             self._eaten = prevState._eaten[:]
             self.score = prevState.score
+            self.scoreChange = prevState.scoreChange
         else:
             self.food = None
             self.capsules = None
             self.agentStates = []
             self._eaten = []
             self.score = 0
+            self.scoreChange = 0
 
         self._foodEaten = None
         self._capsuleEaten = None
