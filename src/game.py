@@ -295,6 +295,7 @@ class Game:
             if ("registerInitialState" in dir(agent)):
                 agent.registerInitialState(self.state.deepCopy())
 
+        initialState = self.state.deepCopy()
         agentIndex = self.startingIndex
         numAgents = len(self.agents)
 
@@ -310,5 +311,54 @@ class Game:
                 self.gameOver = True
             agentIndex = (agentIndex + 1) % numAgents
             self.numMoves += 1
+
+        # Keep game window open and interactive after path/game completes!
+        import graphicsUtils as _gu
+        while _gu._root_window is not None:
+            _gu.sleep(0.05)
+            clicked = _gu.get_clicked_algo()
+            if not clicked:
+                continue
+
+            if clicked == 'autograder':
+                print("\n" + "="*52)
+                print("  RUNNING PAC-MAN INTELLIGENT SEARCH AUTOGRADER")
+                print("="*52)
+                import subprocess, sys
+                try:
+                    res = subprocess.run([sys.executable, "autograder.py"], capture_output=True, text=True)
+                    print(res.stdout)
+                except Exception as e:
+                    print("Autograder execution error:", e)
+                continue
+
+            # Reset game back to initial state
+            self.state = initialState.deepCopy()
+            self.gameOver = False
+            self.numMoves = 0
+            agentIndex = self.startingIndex
+
+            if hasattr(self.agents[0], 'planned_actions'):
+                if clicked in ['bfs', 'dfs', 'ucs', 'astar']:
+                    self.agents[0].autoAlgo = clicked
+                    self.agents[0].planned_actions = self.agents[0].planPath(clicked, self.state)
+                elif clicked == 'retry':
+                    self.agents[0].autoAlgo = None
+                    self.agents[0].planned_actions = []
+
+            self.display.initialize(self.state.data)
+
+            while not self.gameOver:
+                agent = self.agents[agentIndex]
+                action = agent.getAction(self.state.deepCopy())
+                self.moveHistory.append((agentIndex, action))
+                self.state = self.state.generateSuccessor(agentIndex, action)
+                self.display.update(self.state.data)
+                self.rules.process(self.state, self)
+
+                if self.state.isWin() or self.state.isLose():
+                    self.gameOver = True
+                agentIndex = (agentIndex + 1) % numAgents
+                self.numMoves += 1
 
         self.display.finish()

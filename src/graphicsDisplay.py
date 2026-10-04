@@ -22,7 +22,7 @@ FONT = "Segoe UI"
 
 # Page layout (pixels)
 MARGIN = 24             # gap between window edge and panels
-MIN_WIDTH = 760         # header/footer need this much room on small mazes
+MIN_WIDTH = 840         # header/footer need this much room on small mazes
 MAZE_SIDE_PAD = 70      # extra inset of the maze relative to the panels
 HEADER_TOP = 16
 HEADER_HEIGHT = 56
@@ -58,7 +58,14 @@ BTN_ACTIVE = {'fill': '#1673ff', 'outline': '#59c8ff', 'text': '#FFFFFF', 'glow'
 BTN_IDLE = {'fill': '#0b1a3d', 'outline': '#2a4a8f', 'text': '#d6e2ff', 'glow': [None, None]}
 BTN_HOVER = {'fill': '#11285a', 'outline': '#3d6fd0', 'text': '#FFFFFF', 'glow': [None, None]}
 
-ALGORITHMS = [('bfs', 'BFS', 104), ('dfs', 'DFS', 96), ('ucs', 'UCS', 92), ('astar', 'A* Search', 110)]
+ALGORITHMS = [
+    ('bfs', 'BFS', 70),
+    ('dfs', 'DFS', 70),
+    ('ucs', 'UCS', 70),
+    ('astar', 'A* Search', 95),
+    ('retry', '🔄 Retry', 85),
+    ('autograder', '🧪 Autograder', 115)
+]
 
 
 def _blend(c0, c1, t):
@@ -213,7 +220,7 @@ class PacmanGraphics:
             c.tag_bind(tag, '<Button-1>', lambda e, k=key: self.onAlgoClick(k))
             c.tag_bind(tag, '<Enter>', lambda e, k=key: self.onAlgoHover(k, True))
             c.tag_bind(tag, '<Leave>', lambda e, k=key: self.onAlgoHover(k, False))
-            bx += bw + 20
+            bx += bw + 12
 
     def buildButton(self, box, caption, tag):
         """Create a button's canvas items once; styleButton only recolours them.

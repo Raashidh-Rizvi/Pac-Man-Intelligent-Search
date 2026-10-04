@@ -114,20 +114,37 @@ class KeyboardAgent(Agent):
         from searchAgents import PositionSearchProblem, manhattanHeuristic
         if state.getNumFood() == 0:
             return []
-        problem = PositionSearchProblem(state, warn=False)
-        if algo == 'bfs':
-            actions = search.bfs(problem)
-        elif algo == 'dfs':
-            actions = search.dfs(problem)
-        elif algo == 'ucs':
-            actions = search.ucs(problem)
-        elif algo == 'astar':
-            actions = search.aStarSearch(problem, manhattanHeuristic)
-        else:
+        try:
+            problem = PositionSearchProblem(state, warn=False)
+            if algo == 'bfs':
+                actions = search.bfs(problem)
+            elif algo == 'dfs':
+                actions = search.dfs(problem)
+            elif algo == 'ucs':
+                actions = search.ucs(problem)
+            elif algo == 'astar':
+                actions = search.aStarSearch(problem, manhattanHeuristic)
+            else:
+                return []
+            
+            if not actions and state.getNumFood() > 0:
+                self.show_error_popup("Algorithm Not Connected", f"[{algo.upper()}] algorithm is not connected or could not find a path to the goal!")
+                return []
+
+            print('[%s] goal %s: path length %d, cost %d, nodes expanded %d' % (
+                algo.upper(), problem.goal, len(actions), problem.getCostOfActions(actions), problem._expanded))
+            return list(actions)
+
+        except Exception as e:
+            self.show_error_popup("Connection Error", f"[{algo.upper()}] algorithm is not connected!\n\nError: {e}")
             return []
-        print('[%s] goal %s: path length %d, cost %d, nodes expanded %d' % (
-            algo.upper(), problem.goal, len(actions), problem.getCostOfActions(actions), problem._expanded))
-        return list(actions)
+
+    def show_error_popup(self, title, message):
+        try:
+            from tkinter import messagebox
+            messagebox.showerror(title, message)
+        except Exception:
+            print(f"*** {title}: {message}")
 
     def getMove(self, keys):
         if keys & PACMAN_MOVE_NORTH:
