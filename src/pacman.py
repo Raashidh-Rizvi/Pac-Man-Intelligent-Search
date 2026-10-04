@@ -47,6 +47,7 @@ class KeyboardAgent(Agent):
         self.lastMove = Directions.STOP
         self.keys = set()
         self.planned_actions = []
+        self.autoAlgo = None    # algorithm that keeps replanning until all food is eaten
 
     def getAction(self, state):
         from graphicsUtils import get_clicked_algo, keys_waiting, keys_pressed
@@ -62,29 +63,34 @@ class KeyboardAgent(Agent):
         # Check if an algorithm button was clicked at the bottom toolbar
         clicked_algo = get_clicked_algo()
         if clicked_algo is not None:
-            import search
-            from searchAgents import PositionSearchProblem
-            problem = PositionSearchProblem(state)
+            self.autoAlgo = clicked_algo
+            self.planned_actions = self.planPath(clicked_algo, state)
+            # Drop any held/remembered key so it doesn't override or follow the plan
+            keys_waiting()
+            self.keys = set()
+            self.lastMove = Directions.STOP
 
-            if clicked_algo == 'bfs':
-                self.planned_actions = search.bfs(problem)
-            elif clicked_algo == 'dfs':
-                self.planned_actions = search.dfs(problem)
-            elif clicked_algo == 'ucs':
-                self.planned_actions = search.ucs(problem)
-            elif clicked_algo == 'astar':
-                from searchAgents import manhattanHeuristic
-                self.planned_actions = search.aStarSearch(problem, manhattanHeuristic)
+        # A new key press hands control back to the player
+        newKeys = set(keys_waiting())
+        keys = newKeys | set(keys_pressed())
+        if newKeys and self.autoAlgo is not None:
+            self.autoAlgo = None
+            self.planned_actions = []
+
+        # Path finished but dots remain: search again for the next one
+        if not self.planned_actions and self.autoAlgo is not None:
+            self.planned_actions = self.planPath(self.autoAlgo, state)
+            if not self.planned_actions:
+                self.autoAlgo = None
 
         # If we have planned actions from an algorithm click, execute them sequentially!
         if self.planned_actions:
             move = self.planned_actions.pop(0)
-            legal = state.getLegalPacmanActions()
-            if move in legal:
-                self.lastMove = move
+            if move in state.getLegalPacmanActions():
+                self.lastMove = move if self.planned_actions else Directions.STOP
                 return move
+            self.planned_actions = []
 
-        keys = set(keys_waiting()) | set(keys_pressed())
         if keys:
             self.keys = keys
 
@@ -101,6 +107,27 @@ class KeyboardAgent(Agent):
 
         self.lastMove = move
         return move
+
+    def planPath(self, algo, state):
+        """Run the chosen search from Pac-Man's position to the target food dot."""
+        import search
+        from searchAgents import PositionSearchProblem, manhattanHeuristic
+        if state.getNumFood() == 0:
+            return []
+        problem = PositionSearchProblem(state, warn=False)
+        if algo == 'bfs':
+            actions = search.bfs(problem)
+        elif algo == 'dfs':
+            actions = search.dfs(problem)
+        elif algo == 'ucs':
+            actions = search.ucs(problem)
+        elif algo == 'astar':
+            actions = search.aStarSearch(problem, manhattanHeuristic)
+        else:
+            return []
+        print('[%s] goal %s: path length %d, cost %d, nodes expanded %d' % (
+            algo.upper(), problem.goal, len(actions), problem.getCostOfActions(actions), problem._expanded))
+        return list(actions)
 
     def getMove(self, keys):
         if keys & PACMAN_MOVE_NORTH:
@@ -494,6 +521,8 @@ def runGames( layout, pacman, ghosts, display, numGames, record=False ):
     # Hack for namespace
     game.Configuration.layout = layout
     import ghostAgents
+    import __main__
+    __main__.__dict__['_display'] = display
 
     rules = PacmanRules()
     games = []

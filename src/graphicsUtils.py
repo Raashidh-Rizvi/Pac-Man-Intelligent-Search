@@ -109,14 +109,20 @@ def _destroy_window():
             pass
         _root_window = None
 
-def sleep(ms):
-    if _root_window:
-        try:
-            _root_window.update_idletasks()
-            _root_window.update()
-        except Exception:
-            pass
-    time.sleep(ms / 1000.0)
+def sleep(secs):
+    """Wait `secs` seconds while keeping the window responsive to clicks and keys."""
+    end = time.time() + secs
+    while True:
+        if _root_window:
+            try:
+                _root_window.update_idletasks()
+                _root_window.update()
+            except Exception:
+                pass
+        remaining = end - time.time()
+        if remaining <= 0:
+            break
+        time.sleep(min(remaining, 0.01))
 
 def polygon(coords, outlineColor, fillColor=None, filled=1, smoothed=0, width=1):
     if _canvas is None: return
