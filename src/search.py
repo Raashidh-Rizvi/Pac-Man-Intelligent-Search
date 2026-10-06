@@ -96,25 +96,69 @@ def depthFirstSearch(problem):
     return []
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    # Member 2 (Atheek Fareez) - Question 2: Breadth First Search
+    """
+    Search the shallowest nodes in the search tree first.
+    [Question 2 Implementation by Member 2: Atheek Fareez]
+    """
+    # =========================================================================
+    # STEP 1: Initialize the Frontier (Fringe) Data Structure
+    # -------------------------------------------------------------------------
+    # BFS requires a FIFO (First-In, First-Out) Queue so that nodes at the
+    # shallowest depth are always expanded first before deeper levels.
+    # We use util.Queue provided by the project framework.
+    # =========================================================================
     frontier = util.Queue()
+
+    # =========================================================================
+    # STEP 2: Get the Initial Start State & Push to Frontier
+    # -------------------------------------------------------------------------
+    # Each entry in the frontier is a tuple: (current_state, path_of_actions)
+    # At start, actions list is empty [] because Pac-Man has not moved yet.
+    # =========================================================================
     startState = problem.getStartState()
     frontier.push((startState, []))
+
+    # =========================================================================
+    # STEP 3: Initialize the Visited (Expanded) Set for Graph Search
+    # -------------------------------------------------------------------------
+    # Pac-Man mazes contain cycles (loops). We must remember expanded states
+    # so we never expand the same state twice, avoiding infinite loops.
+    # =========================================================================
     visited = set()
 
+    # =========================================================================
+    # STEP 4: Main Search Loop
+    # -------------------------------------------------------------------------
+    # Continue expanding nodes until either:
+    # 1. The goal state is reached (success), or
+    # 2. The frontier becomes empty (no solution exists).
+    # =========================================================================
     while not frontier.isEmpty():
+        # Pop the oldest unexpanded node from the front of the FIFO Queue
         state, actions = frontier.pop()
 
+        # STEP 4.1: Goal Test
+        # Check if the current popped state satisfies the problem goal
         if problem.isGoalState(state):
             return actions
 
+        # STEP 4.2: Graph Search Check
+        # Only expand this state if it has NOT been expanded previously
         if state not in visited:
+            # Mark this state as expanded
             visited.add(state)
-            for successor, action, stepCost in problem.getSuccessors(state):
-                if successor not in visited:
-                    frontier.push((successor, actions + [action]))
 
+            # STEP 4.3: Expand Successors (Neighbors)
+            # problem.getSuccessors(state) returns a list of:
+            # (next_state, action_taken, step_cost)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                # Only enqueue successors that are not already visited
+                if successor not in visited:
+                    # Accumulate the action path and push to the FIFO queue
+                    newActions = actions + [action]
+                    frontier.push((successor, newActions))
+
+    # Return empty list if no path to the goal is found
     return []
 
 def uniformCostSearch(problem):
