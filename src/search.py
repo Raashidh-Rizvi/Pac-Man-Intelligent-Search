@@ -76,23 +76,43 @@ def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
     """
+
+    # Create a stack for DFS
     frontier = util.Stack()
+
+    # Get the starting state
     startState = problem.getStartState()
+
+    # Store: (current state, path taken)
     frontier.push((startState, []))
+
+    # Keep track of already visited states
     visited = set()
 
+    # Continue until there are no more states to explore
     while not frontier.isEmpty():
+
+        # Remove the top item from the stack
         state, actions = frontier.pop()
 
+        # If we reached the goal, return the path
         if problem.isGoalState(state):
             return actions
 
+        # Only expand states that have not been visited
         if state not in visited:
-            visited.add(state)
-            for successor, action, stepCost in problem.getSuccessors(state):
-                if successor not in visited:
-                    frontier.push((successor, actions + [action]))
 
+            visited.add(state)
+
+            # Get all possible next states
+            for successor, action, stepCost in problem.getSuccessors(state):
+
+                if successor not in visited:
+                    newActions = actions + [action]
+
+                    frontier.push((successor, newActions))
+
+    # Return empty path if no solution exists
     return []
 
 def breadthFirstSearch(problem):
