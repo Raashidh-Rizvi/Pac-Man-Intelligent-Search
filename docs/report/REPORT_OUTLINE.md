@@ -26,6 +26,20 @@ A `visited` set is used to keep track of expanded states. This prevents cycles a
 ## 3. Informed Search & Heuristics (Q4 - Q7)
 - A* Search implementation.
 - Corners Problem state representation.
+### 3.2 Corners Problem (Q5) — S.P.R.H. Wijesiri (IT24100602)
+
+**Logic & Implementation:**  
+The Corners Problem requires Pac-Man to visit all four corners of the maze. The search state is represented using two parts: Pac-Man's current position and a tuple that records which of the four corners have already been visited.
+
+The `getStartState()` method creates the initial state using Pac-Man's starting position and marks any corner that has already been visited. The `isGoalState()` method checks whether all four corners have been visited.
+
+The `getSuccessors()` method considers the four possible movement directions: North, South, East, and West. A successor is only created when the movement does not hit a wall. If the new position is one of the four corners, the corresponding value in the visited-corners tuple is changed to `True`. Each legal movement has a step cost of 1.
+
+The `getCostOfActions()` method verifies that the given sequence of actions does not pass through walls and returns the total number of actions as the path cost.
+
+**Autograder Evidence:**
+
+![Q5 Corners Problem Autograder Result](Member_01_Screenshots/q5_autograder_corners.png)
 - Corners Heuristic design, proof of admissibility and consistency.
 - Food Heuristic relaxation techniques (MST / Minimum Distance bounds).
 
