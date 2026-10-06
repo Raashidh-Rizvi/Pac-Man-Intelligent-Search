@@ -4,7 +4,19 @@
 
 **Role:** A* and Search-Problem Modeling Lead  
 **Primary Questions:** Q4 — A* Search, Q5 — CornersProblem  
-**Primary Files:** `search.py`, `searchAgents.py`
+**Primary Files:** `src/search.py`, `src/searchAgents.py`
+
+## Verified baseline and actual contribution (2026-10-07)
+
+A* and CornersProblem already existed at baseline `43e6cde`. Member 3 did
+not originally implement them in this execution phase. Both implementations
+were preserved after passing the downloaded Berkeley Q4/Q5 tests on Python
+3.14.3. Verification on the required Python 3.9–3.11 runtime remains pending.
+
+Actual work: fix SearchAgent's selected-heuristic forwarding, add seven
+regression tests, verify the existing Q4/Q5 implementations, document the Q5
+contract, and reproduce the Q6 issue for Member 4 without editing heuristics.
+See [verification evidence](../testing/MEMBER3_VERIFICATION.md).
 
 ---
 
@@ -68,15 +80,32 @@ python autograder.py -q q5
 
 Coordinate with Member 4 early.
 
-Conceptually, the state may be structured as:
+The existing state is exactly:
 
 ```text
-(PacmanPosition, VisitedCorners)
+((x, y), (visited_bottom_left, visited_top_left,
+          visited_bottom_right, visited_top_right))
 ```
 
-The exact representation must remain compatible with the provided starter code/autograder.
+Each flag is a boolean. The outer state, position, and visited flags are tuples,
+so the state is compact and hashable. The ordering follows `problem.corners`:
 
-This allows Member 4 to design Q6 while Member 3 implements the concrete representation.
+| Index | Corner |
+|---|---|
+| 0 | `(1, 1)` |
+| 1 | `(1, walls.height - 2)` |
+| 2 | `(walls.width - 2, 1)` |
+| 3 | `(walls.width - 2, walls.height - 2)` |
+
+Starting at a corner sets its flag immediately. A successor preserves existing
+flags and marks its destination corner using a fresh tuple. Goal states have
+all four flags set. Walls are stored on the problem, never inside the state.
+Each legal move costs 1; `_expanded` increases once per successor-generation call.
+
+Member 4's `cornersHeuristic` indexes this tuple using the same corner order.
+Preserve this interface; agreement with Member 4 is still a coordination task.
+
+This contract allows Member 4 to correct Q6 independently of Q5.
 
 ---
 
@@ -142,14 +171,15 @@ feature/q4-q5-member3
 Recommended commits:
 
 ```text
-feat(search): implement A* using g+h priority
-feat(corners): implement CornersProblem state
-test(q4-q5): verify A* and CornersProblem
-fix(corners): correct visited-corner bookkeeping
+fix(search-agent): forward selected heuristic to A*
+docs(q5): document corner-state contract and verification
+docs(team): correct Member 3 Q4-Q5 ownership
 docs(report): add q4-q5 evidence
 ```
 
-Avoid broad refactoring that creates merge conflicts for the rest of the team.
+Use messages only for work actually completed. Do not claim new authorship of
+the existing A*/CornersProblem implementations or claim Python 3.11 results
+until they have been run. Avoid broad refactoring that creates merge conflicts.
 
 ---
 
@@ -190,11 +220,12 @@ Also understand both heuristics well enough to defend them mathematically.
 
 # 9. Definition of Done
 
-- [ ] Q4 implemented.
-- [ ] Q5 implemented.
+- [x] Existing Q4 implementation inspected and preserved.
+- [x] Existing Q5 implementation inspected and preserved.
 - [ ] Q5 state contract agreed with Member 4.
-- [ ] Q4 passes.
-- [ ] Q5 passes.
+- [x] Berkeley Q4/Q5 tests executed on Python 3.14.3 (see evidence).
+- [ ] Q4 verified on required Python 3.9–3.11.
+- [ ] Q5 verified on required Python 3.9–3.11.
 - [ ] Screenshots captured.
 - [ ] PR reviewed and merged.
 - [ ] Q4/Q5 report sections completed.
