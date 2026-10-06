@@ -2,6 +2,8 @@
 
 ## Role
 
+**Assigned Student:** Atheek Fareez  
+**Git Branch:** `feature/q2-q3-atheek`  
 **Role:** Cost-Based Search Developer  
 **Primary Questions:** Q2 — BFS, Q3 — Uniform Cost Search  
 **Primary File:** `search.py`

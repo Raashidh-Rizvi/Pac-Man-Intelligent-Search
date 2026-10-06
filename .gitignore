@@ -25,6 +25,11 @@ submission/final/*.zip
 submission/final/*.pdf
 !submission/README.md
 
+# Personal local guidelines and study notes (never pushed to GitHub)
+docs/team/ATHEEK_*
+*guide*.md
+*GUIDE*.md
+
 # Explicitly ensure core assignment and project files are never ignored
 !search.py
 !searchAgents.py
