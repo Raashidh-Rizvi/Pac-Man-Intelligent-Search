@@ -3,6 +3,7 @@
 ## Role
 
 **Assigned Student:** Atheek Fareez  
+**Student ID:** IT24103933  
 **Git Branch:** `feature/q2-q3-atheek`  
 **Role:** Cost-Based Search Developer  
 **Primary Questions:** Q2 — BFS, Q3 — Uniform Cost Search  
