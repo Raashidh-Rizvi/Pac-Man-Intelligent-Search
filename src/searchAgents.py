@@ -65,6 +65,11 @@ class SearchAgent(Agent):
         else:
             raise AttributeError(heuristic + ' is not a heuristic function in searchAgents.py or search.py.')
 
+        # Bind the heuristic for A*, as in the official SearchAgent.
+        searchFunction = self.searchFunction
+        if 'heuristic' in searchFunction.__code__.co_varnames:
+            self.searchFunction = lambda problem: searchFunction(problem, heuristic=self.heuristicFunction)
+
     def registerInitialState(self, state):
         """
         This is the first time that the agent sees the layout of the game
