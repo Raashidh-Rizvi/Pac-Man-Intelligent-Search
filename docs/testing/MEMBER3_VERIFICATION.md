@@ -3,7 +3,8 @@
 ## Scope and provenance
 
 Starting commit: `43e6cdeb5f2b2efde3510cf6e8fe4b221b14ec12`.
-Tested code commit: `81faccf` (`fix(search-agent): forward selected heuristic to A*`).
+Tested branch HEAD for finalization: `b029a05` (production code unchanged since
+`81faccf`, `fix(search-agent): forward selected heuristic to A*`).
 Branch: `feature/q4-q5-member3`, created from clean `main` after fetching origin
 and confirming that this branch did not exist remotely.
 
@@ -14,16 +15,19 @@ dispatch pattern. No DFS/BFS/UCS or Q6/Q7 heuristic implementation was edited.
 
 These are actual execution results, not claims of original Q4/Q5 authorship.
 
-## Runtime limitation
+## Supported-runtime verification — 2026-10-07
 
-All Python tests below ran on **CPython 3.14.3**, using
-`C:\Users\WAZNI\AppData\Local\Programs\Python\Python314\python.exe`.
-`py -0p` lists only Python 3.14 and 3.12; no supported 3.9–3.11 interpreter was
-found in the checked standard installation locations. No virtual environment
-was active or created, and no system software or dependencies were installed.
+Finalization tests ran on **CPython 3.11.9** from the project's `.venv`:
+`C:\Users\WAZNI\Desktop\SLIIT\PROJECTS\Y3\Y3-S1\IA\Pac-Man Intelligent Search\.venv\Scripts\python.exe`.
+This meets the required Python 3.9–3.11 range. The existing environment was
+activated for repository tests; the same executable was used explicitly for
+official tests. No Python installation or dependency changes were made.
 
-**This does not meet the assignment runtime requirement. Repeat the final
-checks under Python 3.11 before submission.**
+The earlier execution phase used Python 3.14.3. Its results remain historical
+evidence; the supported-runtime results below supersede the runtime limitation.
+Bare `python` in an unactivated shell still resolves to Python 3.14.3, so activate
+`.venv` or call its executable directly. Verification date: **2026-10-07,
+Asia/Colombo**.
 
 ## Official Berkeley infrastructure
 
@@ -41,6 +45,8 @@ Temporary location, outside this Git repository:
   `search.py` and `searchAgents.py` replaced by exact copies of this repository's
   two `src/` files.
 - `official-q4-after.txt` and `official-q5-after.txt`: captured post-fix output.
+- `official-q4-python311.txt` and `official-q5-python311.txt`: captured final
+  Python 3.11.9 output, separate from the earlier Python 3.14.3 logs.
 - `q6_diagnostic.py`: independent remaining-cost BFS and Q6 reproduction.
 
 No adapter was necessary. Copying the two submission files into the official
@@ -53,16 +59,22 @@ The archive contains `test_cases/q1` through `q8`, six Q4 tests, one Q5 test,
 and 37 layouts including `trickySearch`. The repository's root autograder
 remains a separate custom smoke suite with no official `test_cases/` tree.
 
-## OFFICIAL results — unsupported runtime
+## OFFICIAL Berkeley results — Python 3.11.9
 
-From the temporary `submission/` directory:
+From the temporary `submission/` directory, using the project virtual
+environment's executable (the relative path resolves outside the temporary
+environment to the repository):
 
 ```powershell
-python -B autograder.py -q q4 --no-graphics
-python -B autograder.py -q q5 --no-graphics
+& '..\..\..\Pac-Man Intelligent Search\.venv\Scripts\python.exe' -B autograder.py -q q4 --no-graphics
+& '..\..\..\Pac-Man Intelligent Search\.venv\Scripts\python.exe' -B autograder.py -q q5 --no-graphics
 ```
 
-Both commands passed before and after the SearchAgent fix.
+Both commands passed during finalization on Python 3.11.9. They also passed
+before and after the SearchAgent fix in the earlier Python 3.14.3 execution.
+The two temporary submission files were refreshed from the current repository
+and verified byte-for-byte. All official non-submission files were compared
+against the untouched extraction again and remained identical.
 
 | Test | Result | Evidence |
 |---|---|---|
@@ -79,26 +91,29 @@ all five Q2 tests also passed, scoring 3/3. These Berkeley raw points are not
 the assignment's 4-mark Q4 / 8-mark Q5 allocation; no conversion is asserted.
 These results do not establish that the entire submission passes Q1–Q7.
 
-## CUSTOM repository results
+## CUSTOM repository results — Python 3.11.9
 
 From the repository root:
 
 ```powershell
+. .\.venv\Scripts\Activate.ps1
+python --version # Python 3.11.9
 python -B autograder.py -q q4
 python -B autograder.py -q q5
-python -B autograder.py
 python -B -m unittest discover -s tests -v
 ```
 
-The targeted commands passed before the fix; the full smoke suite passed after
-the fix and included the same Q4/Q5 cases.
+All three test commands above passed during finalization on Python 3.11.9.
 
 | Check | Result |
 |---|---|
 | Custom Q4 | 3/3; local mediumMaze cost 20, expanded 20 |
 | Custom Q5 | 3/3; local tinyCorners cost 11 / expanded 114; mediumCorners cost 42 / expanded 684 |
-| Full custom Q1–Q7 smoke suite | 22/22 |
-| Member 3 unittest suite | Seven tests passed |
+| Member 3 unittest suite | 7/7 tests passed |
+
+Historical integration evidence: `python -B autograder.py` passed 22/22 on
+Python 3.14.3 in the earlier execution phase. It was not rerun as a full suite
+during this finalization; the supported-runtime checks target Member 3's scope.
 
 Before the fix, the selected-Manhattan test failed for both `astar` and
 `aStarSearch`: the heuristic call count was zero. After the fix, both invoke
@@ -140,5 +155,16 @@ reports 3/3 (cost 42, expanded 50), demonstrating its coverage limitation.
   `StayWestSearchAgent`, and `mazeDistance`. Q4/Q5 tests do not require them,
   but broader official integration needs team review. They were not added here.
 - Local and official mazes differ; their costs/expansion counts are not comparable.
-- Python 3.11 rerun, lecturer-specific score mapping, screenshots, team review,
-  and Q6 correction remain pending. No main merge is part of this work.
+- Supported Python 3.11.9 Q4/Q5 and regression verification is complete.
+  Lecturer-specific score mapping, screenshots, team review, exact AI prompt
+  recording, and Q6 correction remain pending. No main merge is part of this work.
+
+## AI usage record review
+
+`docs/report/AI_USAGE.md` previously recorded only documentation scaffolding.
+Member 3 used Codex for diagnosis, the SearchAgent integration fix, regression
+tests, verification, and documentation/finalization. Existing entries were
+preserved and this scope was recorded accurately. No exact Member 3 diagnosis
+or execution prompt record was found in the project files inspected; preserving
+the original prompts in the report record remains pending. No historical prompt
+was reconstructed or invented, and no screenshots were generated or claimed.

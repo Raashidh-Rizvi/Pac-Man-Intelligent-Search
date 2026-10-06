@@ -10,8 +10,9 @@
 
 A* and CornersProblem already existed at baseline `43e6cde`. Member 3 did
 not originally implement them in this execution phase. Both implementations
-were preserved after passing the downloaded Berkeley Q4/Q5 tests on Python
-3.14.3. Verification on the required Python 3.9–3.11 runtime remains pending.
+were preserved after passing the downloaded Berkeley Q4/Q5 tests. Finalization
+on 2026-10-07 verified Q4 3/3, Q5 3/3, custom Q4/Q5 3/3 each, and 7/7 regression
+tests using the project's `.venv` with Python 3.11.9, meeting the runtime requirement.
 
 Actual work: fix SearchAgent's selected-heuristic forwarding, add seven
 regression tests, verify the existing Q4/Q5 implementations, document the Q5
@@ -224,8 +225,8 @@ Also understand both heuristics well enough to defend them mathematically.
 - [x] Existing Q5 implementation inspected and preserved.
 - [ ] Q5 state contract agreed with Member 4.
 - [x] Berkeley Q4/Q5 tests executed on Python 3.14.3 (see evidence).
-- [ ] Q4 verified on required Python 3.9–3.11.
-- [ ] Q5 verified on required Python 3.9–3.11.
+- [x] Q4 verified on required Python 3.9–3.11 (3.11.9).
+- [x] Q5 verified on required Python 3.9–3.11 (3.11.9).
 - [ ] Screenshots captured.
 - [ ] PR reviewed and merged.
 - [ ] Q4/Q5 report sections completed.

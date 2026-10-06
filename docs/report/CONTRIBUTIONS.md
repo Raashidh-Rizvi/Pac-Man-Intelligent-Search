@@ -16,5 +16,6 @@ Member 3's actual work on 2026-10-07: fix SearchAgent's selected-heuristic
 forwarding; add seven regression tests; verify the existing Q4/Q5 implementations
 against the downloaded Berkeley tests; document the Q5 state contract; and
 reproduce the Q6 issue for Member 4. Existing A*/CornersProblem code predates
-this branch and was not rewritten. Python 3.11 verification remains pending.
+this branch and was not rewritten. Finalization on 2026-10-07 passed official
+Berkeley Q4/Q5, custom Q4/Q5, and seven regression tests on Python 3.11.9.
 See [verification evidence](../testing/MEMBER3_VERIFICATION.md).
