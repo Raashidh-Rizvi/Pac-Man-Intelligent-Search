@@ -238,25 +238,96 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+def cornerMazeDistances(problem):
+    """
+    Returns a dict mapping each corner to a dict of true maze distances from that
+    corner to every reachable square in the layout.
+
+    One breadth-first sweep is run per corner, and the result is cached on the
+    problem instance, so the four sweeps happen once per search rather than once
+    per heuristic call.  Because every step costs 1, breadth-first order gives the
+    exact shortest-path distance, and the distances respect walls.
+    """
+    if hasattr(problem, '_cornerMazeDistances'):
+        return problem._cornerMazeDistances
+
+    walls = problem.walls
+    distanceMaps = {}
+    for corner in problem.corners:
+        distances = {corner: 0}
+        frontier = util.Queue()
+        frontier.push(corner)
+        while not frontier.isEmpty():
+            x, y = frontier.pop()
+            for dx, dy in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                nextPos = (x + dx, y + dy)
+                if walls[nextPos[0]][nextPos[1]] or nextPos in distances:
+                    continue
+                distances[nextPos] = distances[(x, y)] + 1
+                frontier.push(nextPos)
+        distanceMaps[corner] = distances
+
+    problem._cornerMazeDistances = distanceMaps
+    return distanceMaps
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem.
+
+    The estimate is the cost of the cheapest tour that starts at Pacman's current
+    position and visits every corner he has not eaten yet, where the cost of each
+    leg is the true maze distance between its two endpoints.  With at most four
+    corners outstanding there are at most 4! = 24 orderings, so the minimum is
+    found by enumerating them.
+
+    Admissible: any real solution from this state visits the outstanding corners
+    in some order, and each of its legs is at least the maze distance between that
+    leg's endpoints.  So the real cost is at least the cost of that ordering, which
+    is at least the minimum over all orderings.
+
+    Consistent: the value is the exact goal distance of a relaxed problem in which
+    travelling from a square to a corner costs the maze distance between them.  For
+    a step that eats no corner, the triangle inequality gives
+    d(p, c) <= 1 + d(p', c), so h(s) <= 1 + h(s').  For a step onto a new corner c,
+    visiting c first is one candidate ordering, so h(s) <= 1 + h(s') as well.
+
+    Zero at every goal state, since no corners remain to be visited.
     """
-    corners = problem.corners
+    from itertools import permutations
+
     position, visited = state
-    unvisited = [corners[i] for i in range(len(corners)) if not visited[i]]
-    if not unvisited:
+    corners = problem.corners
+    outstanding = tuple(corners[i] for i in range(len(corners)) if not visited[i])
+    if not outstanding:
         return 0
 
-    curr = position
-    total = 0
-    remaining = list(unvisited)
-    while remaining:
-        closest = min(remaining, key=lambda c: util.manhattanDistance(curr, c))
-        total += util.manhattanDistance(curr, closest)
-        curr = closest
-        remaining.remove(closest)
-    return total
+    if not hasattr(problem, '_cornersHeuristicCache'):
+        problem._cornersHeuristicCache = {}
+    cache = problem._cornersHeuristicCache
+    cacheKey = (position, outstanding)
+    if cacheKey in cache:
+        return cache[cacheKey]
+
+    distanceMaps = cornerMazeDistances(problem)
+    best = None
+    for order in permutations(outstanding):
+        # Maze distance is symmetric, so the map keyed on a corner also gives the
+        # distance from an arbitrary square to that corner.
+        total = distanceMaps[order[0]][position]
+        for current, nextCorner in zip(order, order[1:]):
+            total += distanceMaps[current][nextCorner]
+        if best is None or total < best:
+            best = total
+
+    cache[cacheKey] = best
+    return best
+
+
+class AStarCornersAgent(SearchAgent):
+    "A SearchAgent for the CornersProblem using A* and cornersHeuristic."
+    def __init__(self):
+        self.searchFunction = lambda prob: search.aStarSearch(prob, cornersHeuristic)
+        self.problemType = CornersProblem
 
 
 class FoodSearchProblem:
