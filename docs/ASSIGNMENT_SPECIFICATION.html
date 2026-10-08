@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE3062 - Search Algorithms in Pac-Man Assignment Specification</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --bg-subtle: #f8fafc;
+            --border: #e2e8f0;
+            --accent: #d97706;
+            --success: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #f1f5f9;
+            padding: 2rem 1rem;
+        }
+
+        .paper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 3rem 4rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Action Bar for Screen view */
+        .no-print-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            max-width: 900px;
+            margin: 0 auto 1.5rem auto;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .print-btn {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .print-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Typography */
+        .header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .faculty {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary-light);
+            margin-bottom: 0.25rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem 2rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .meta-grid strong {
+            color: var(--text-dark);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.88em;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border: none;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        /* Callout boxes */
+        .callout {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary-light);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .callout-warning {
+            background-color: #fffbeb;
+            border-left-color: var(--accent);
+        }
+
+        /* PDF / Print Optimization */
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+            }
+
+            .paper {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .no-print-bar {
+                display: none !important;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                margin-top: 1.5rem;
+                page-break-after: avoid;
+            }
+
+            h3 {
+                page-break-after: avoid;
+            }
+
+            table, pre, .callout {
+                page-break-inside: avoid;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar">
+        <div>
+            <strong>Pac-Man Search Assignment Specification</strong>
+            <div style="font-size: 0.85rem; color: #64748b;">Ready to print or export as PDF document</div>
+        </div>
+        <button class="print-btn" onclick="window.print()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print / Save as PDF
+        </button>
+    </div>
+
+    <div class="paper">
+        <div class="header">
+            <div class="faculty">Faculty of Computing · Department of Computer Science</div>
+            <h1>Search Algorithms in Pac-Man</h1>
+            <p><strong>SE3062: Intelligent Systems</strong> — Group Assignment (10% of Final Grade)</p>
+            
+            <div class="meta-grid">
+                <div><strong>Degree:</strong> BSc (Hons) in Computer Science</div>
+                <div><strong>Lecturer:</strong> Mr. Jeewaka Perera</div>
+                <div><strong>Academic Year:</strong> Year 3 · 2026</div>
+                <div><strong>Team Structure:</strong> Group of 4 Members</div>
+            </div>
+        </div>
+
+        <h2>Course & Project Objective</h2>
+        <p>
+            Implement classic uninformed and informed search algorithms — <strong>Depth-First Search (DFS)</strong>, <strong>Breadth-First Search (BFS)</strong>, <strong>Uniform Cost Search (UCS)</strong>, and <strong>A* Search</strong> — and design admissible, consistent heuristics for two structured problem formulations:
+        </p>
+        <ul>
+            <li><strong>CornersProblem:</strong> Finding a optimal path that touches all four corners of the maze.</li>
+            <li><strong>FoodSearchProblem:</strong> Eating all food dots in the shortest path possible.</li>
+        </ul>
+        <p>
+            This is a <strong>Group Assignment</strong> for teams of 4 members. Students must work together and ensure that every member possesses a complete understanding of the entire solution. Evaluation is conducted both on group deliverables and individual viva/version control contributions.
+        </p>
+        <p><strong>Resource Archive:</strong> <a href="https://inst.eecs.berkeley.edu/~cs188/sp26/assets/projects/search.zip" target="_blank">search.zip (CS188 Framework)</a></p>
+
+        <h2>Marking Scheme Breakdown (Total: 100 Marks)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Assessment Component</th>
+                    <th>Weight / Marks</th>
+                    <th>Evaluation Criteria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Autograder Score</strong></td>
+                    <td><span class="badge">40 Marks</span></td>
+                    <td>Group score produced by automated test execution for Q1–Q7.</td>
+                </tr>
+                <tr>
+                    <td><strong>Group Report</strong></td>
+                    <td><span class="badge">10 Marks</span></td>
+                    <td>Graded on structure, formatting, clarity, code snippets, and completeness.</td>
+                </tr>
+                <tr>
+                    <td><strong>Individual Git Contribution</strong></td>
+                    <td><span class="badge">10 Marks</span></td>
+                    <td>Assessed via report screenshots and active repository commit history.</td>
+                </tr>
+                <tr>
+                    <td><strong>Individual Viva Evaluation</strong></td>
+                    <td><span class="badge">40 Marks</span></td>
+                    <td>6-minute individual assessment: 20 marks Algorithm Knowledge + 20 marks Code Comprehension.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Autograder Allocation (40 Marks)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Autograder Command</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Q1 — Depth-First Search</strong></td>
+                    <td><code>python autograder.py -q q1</code></td>
+                    <td>4 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q2 — Breadth-First Search</strong></td>
+                    <td><code>python autograder.py -q q2</code></td>
+                    <td>4 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q3 — Uniform Cost Search</strong></td>
+                    <td><code>python autograder.py -q q3</code></td>
+                    <td>4 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q4 — A* Search</strong></td>
+                    <td><code>python autograder.py -q q4</code></td>
+                    <td>4 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q5 — Finding All Corners (Problem Formulation)</strong></td>
+                    <td><code>python autograder.py -q q5</code></td>
+                    <td>8 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q6 — Corners Problem Heuristic</strong></td>
+                    <td><code>python autograder.py -q q6</code></td>
+                    <td>8 Marks</td>
+                </tr>
+                <tr>
+                    <td><strong>Q7 — Eating All The Dots (Food Heuristic)</strong></td>
+                    <td><code>python autograder.py -q q7</code></td>
+                    <td>8 Marks</td>
+                </tr>
+                <tr style="font-weight: bold; background-color: #f1f5f9;">
+                    <td colspan="2">Total Marks</td>
+                    <td>40 Marks</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Part 1 — Project Setup & Skeleton</h2>
+        <h3>Section 1: Repository File Structure</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Role</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>search.py</code></td>
+                    <td><strong>Edit</strong></td>
+                    <td>Implementation of general search algorithms (DFS, BFS, UCS, A*) — Q1–Q4.</td>
+                </tr>
+                <tr>
+                    <td><code>searchAgents.py</code></td>
+                    <td><strong>Edit</strong></td>
+                    <td>Search-based Pac-Man agents and problem definitions (CornersProblem, heuristics) — Q5–Q7.</td>
+                </tr>
+                <tr>
+                    <td><code>util.py</code></td>
+                    <td>Read-Only</td>
+                    <td>Data structures: <code>Stack</code>, <code>Queue</code>, <code>PriorityQueue</code>. Must be used (no standard built-ins).</td>
+                </tr>
+                <tr>
+                    <td><code>pacman.py</code></td>
+                    <td>Reference</td>
+                    <td>Main game execution file and <code>GameState</code> type definitions.</td>
+                </tr>
+                <tr>
+                    <td><code>game.py</code></td>
+                    <td>Reference</td>
+                    <td>Core game engine classes (<code>AgentState</code>, <code>Agent</code>, <code>Directions</code>, <code>Grid</code>).</td>
+                </tr>
+                <tr>
+                    <td><code>autograder.py</code></td>
+                    <td>Run</td>
+                    <td>Automated grading and test harness script.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout callout-warning">
+            <strong>Critical Instruction:</strong> Do NOT rename files, functions, or classes. The autograder imports declarations by exact string names; any signature or file renaming results in zero marks.
+        </div>
+
+        <h3>Section 2: Environment & Core Mechanics</h3>
+        <p><strong>Python Version:</strong> Python 3.9 – 3.11</p>
+        <pre><code>conda create -n cs188 python=3.11
+conda activate cs188
+pip install numpy matplotlib
+python pacman.py</code></pre>
+
+        <h3>Graph Search Skeleton Standard</h3>
+        <ol>
+            <li>Initialize frontier with the start state: <code>(start_state, path=[])</code>.</li>
+            <li>Pop a node from the frontier. If state is goal, return action path.</li>
+            <li>If state has not been expanded before, add to <code>visited</code> set and push successors to frontier.</li>
+            <li>Repeat until frontier is empty.</li>
+        </ol>
+        <ul>
+            <li><strong>DFS:</strong> <code>util.Stack</code> (LIFO)</li>
+            <li><strong>BFS:</strong> <code>util.Queue</code> (FIFO)</li>
+            <li><strong>UCS & A*:</strong> <code>util.PriorityQueue</code> (Priority = \(g\) for UCS, \(g + h\) for A*)</li>
+        </ul>
+
+        <h2>Part 2 — Detailed Task Requirements</h2>
+        
+        <h3>Q1 — Depth-First Search (4 Marks)</h3>
+        <p>Implement graph-search DFS in <code>search.py</code> using <code>util.Stack</code>. Must maintain a visited set to avoid expanding repeated states.</p>
+
+        <h3>Q2 — Breadth-First Search (4 Marks)</h3>
+        <p>Implement graph-search BFS in <code>search.py</code> using <code>util.Queue</code>.</p>
+
+        <h3>Q3 — Uniform Cost Search (4 Marks)</h3>
+        <p>Implement UCS in <code>search.py</code> using <code>util.PriorityQueue</code> ordered by cumulative path cost \(g(n)\).</p>
+
+        <h3>Q4 — A* Search (4 Marks)</h3>
+        <p>Implement A* Search in <code>search.py</code> using <code>util.PriorityQueue</code> ordered by \(f(n) = g(n) + h(n)\).</p>
+
+        <h3>Q5 — Corners Problem Representation (8 Marks)</h3>
+        <p>Implement <code>CornersProblem</code> in <code>searchAgents.py</code>. State must be compact and hashable: <code>(position, visited_corners_tuple)</code>.</p>
+
+        <h3>Q6 — Corners Problem Heuristic (8 Marks)</h3>
+        <p>Implement <code>cornersHeuristic</code> in <code>searchAgents.py</code>. Must be admissible and consistent.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nodes Expanded on <code>mediumCorners</code></th>
+                    <th>Marks Awarded</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>&gt; 2,000 nodes</td><td>0 / 8</td></tr>
+                <tr><td>&le; 2,000 nodes</td><td>4 / 8</td></tr>
+                <tr><td>&le; 1,600 nodes</td><td>6 / 8</td></tr>
+                <tr><td>&le; 1,200 nodes</td><td>8 / 8</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Q7 — Food Search Heuristic (8 Marks)</h3>
+        <p>Implement <code>foodHeuristic</code> in <code>searchAgents.py</code> using admissible relaxation (e.g., nearest dot distance + MST cost of food items).</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nodes Expanded on <code>trickySearch</code></th>
+                    <th>Marks Awarded</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>&gt; 15,000 nodes</td><td>2 / 8</td></tr>
+                <tr><td>&le; 15,000 nodes</td><td>4 / 8</td></tr>
+                <tr><td>&le; 12,000 nodes</td><td>6 / 8</td></tr>
+                <tr><td>&le; 9,000 nodes</td><td>8 / 8</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Part 3 — Report & Submission Deliverables</h2>
+        <ul>
+            <li><strong>Report File:</strong> <code>Group_XX_Report.pdf</code></li>
+            <li><strong>Code Zip:</strong> <code>Group_XX_Code.zip</code> containing <code>search.py</code> and <code>searchAgents.py</code>.</li>
+            <li><strong>Required Content:</strong> Code snippets, autograder screenshots, &le;200 word explanations per question, public Git URL, commit evidence graphs, contribution matrix, and AI Usage Declaration.</li>
+        </ul>
+
+        <h2>Part 4 — Individual Viva Evaluation Rubric (50 Marks)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Excellent [18-20]</th>
+                    <th>Good [15-17]</th>
+                    <th>Average [8-14]</th>
+                    <th>Below Average [0-7]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Git Contribution (10m)</strong></td>
+                    <td>Frequent, clear commits across timeline. [9-10]</td>
+                    <td>Regular commits, clear messages. [7-8]</td>
+                    <td>Infrequent or clustered commits. [4-6]</td>
+                    <td>1-2 commits or no evidence. [0-3]</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Algorithm Knowledge (20m)</strong></td>
+                    <td>Flawless explanation of DFS/BFS/UCS/A* and heuristics. [18-20]</td>
+                    <td>Solid grasp with minor hesitations. [15-17]</td>
+                    <td>General understanding; struggles on optimality proofs. [8-14]</td>
+                    <td>Vague or incorrect answers. [0-7]</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Code Defense (20m)</strong></td>
+                    <td>Deep code mastery; mathematically defends heuristics. [18-20]</td>
+                    <td>Solid code flow understanding. [15-17]</td>
+                    <td>Knows only own contribution. [8-14]</td>
+                    <td>Unable to identify code elements. [0-7]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 3rem; text-align: center; border-top: 1px solid var(--border); padding-top: 1.5rem; font-size: 0.85rem; color: var(--text-light);">
+            Faculty of Computing · SE3062 Intelligent Systems · Year 3 (2026)
+        </div>
+    </div>
+
+</body>
+</html>
