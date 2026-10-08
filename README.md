@@ -36,7 +36,7 @@
 | **S.P.R.H. Wijesiri** | `IT24100602` | Q1 (DFS) & Q5 (Corners Problem Co-Author) | `feature/q1-dfs-member1` | Section 2.1 & 3.2 |
 | **Atheek Fareez** | `IT24103933` | Q2 (BFS) & Q3 (Uniform Cost Search) | `feature/q2-q3-atheek` | Section 2.2 & 2.3 |
 | **Wazni Ahamed** | `IT24103352` | Q4 (A*) & Q5 (Corners Problem Co-Author) | `feature/q4-q5-member3` | Section 3.1 & 3.2 |
-| **Member 4** | — | Q6 (Corners Heuristic) & Q7 (Food Heuristic) | `feature/q6-q7-member4` | Section 3.3 & 3.4 |
+| **Raashidh Rizvi** | `IT24104191` | Q6 (Corners Heuristic) & Q7 (Food Heuristic) | `feat(heuristic)--implement-admissible-corners-heuristic-for-Q6` | Section 3.3 & 3.4 |
 
 ---
 

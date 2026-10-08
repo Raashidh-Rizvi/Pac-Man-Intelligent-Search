@@ -2,6 +2,9 @@
 
 ## Role
 
+**Assigned Student:** Raashidh Rizvi  
+**Student ID:** IT24104191  
+**Git Branch:** `feat(heuristic)--implement-admissible-corners-heuristic-for-Q6`  
 **Role:** Heuristic and Performance Lead  
 **Primary Questions:** Q6 — Corners Heuristic, Q7 — Food Heuristic  
 **Primary File:** `searchAgents.py`
