@@ -238,25 +238,97 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+def cornerMazeDistances(problem):
+    """
+    Computes and caches all-pairs shortest maze distances from every corner to
+    every reachable tile in the maze using BFS. Returns a dict mapping:
+    corner -> { (x, y): maze_distance }
+    """
+    if hasattr(problem, '_cornerMazeDistances'):
+        return problem._cornerMazeDistances
+
+    walls = problem.walls
+    distanceMaps = {}
+
+    for corner in problem.corners:
+        dist = {}
+        queue = util.Queue()
+        queue.push((corner, 0))
+        dist[corner] = 0
+
+        while not queue.isEmpty():
+            curr, d = queue.pop()
+            x, y = curr
+            for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+                dx, dy = Actions.directionToVector(action)
+                nextx, nexty = int(x + dx), int(y + dy)
+                nextPos = (nextx, nexty)
+                if not walls[nextx][nexty] and nextPos not in dist:
+                    dist[nextPos] = d + 1
+                    queue.push((nextPos, d + 1))
+
+        distanceMaps[corner] = dist
+
+    problem._cornerMazeDistances = distanceMaps
+    return distanceMaps
+
+
 def cornersHeuristic(state, problem):
     """
-    A heuristic for the CornersProblem.
+    Admissible and consistent tour heuristic for the CornersProblem.
+
+    Computes the exact length of the shortest path starting at `position` and
+    visiting all remaining unvisited corners in ANY order, where distances
+    between points are true maze distances (BFS shortest paths).
+
+    Admissible: any valid solution must physically visit all unvisited corners
+    in some order, and each of its legs is at least the maze distance between that
+    leg's endpoints.  So the real cost is at least the cost of that ordering, which
+    is at least the minimum over all orderings.
+
+    Consistent: the value is the exact goal distance of a relaxed problem in which
+    travelling from a square to a corner costs the maze distance between them.  For
+    a step that eats no corner, the triangle inequality gives
+    d(p, c) <= 1 + d(p', c), so h(s) <= 1 + h(s').  For a step onto a new corner c,
+    visiting c first is one candidate ordering, so h(s) <= 1 + h(s') as well.
+
+    Zero at every goal state, since no corners remain to be visited.
     """
-    corners = problem.corners
+    from itertools import permutations
+
     position, visited = state
-    unvisited = [corners[i] for i in range(len(corners)) if not visited[i]]
-    if not unvisited:
+    corners = problem.corners
+    outstanding = tuple(corners[i] for i in range(len(corners)) if not visited[i])
+    if not outstanding:
         return 0
 
-    curr = position
-    total = 0
-    remaining = list(unvisited)
-    while remaining:
-        closest = min(remaining, key=lambda c: util.manhattanDistance(curr, c))
-        total += util.manhattanDistance(curr, closest)
-        curr = closest
-        remaining.remove(closest)
-    return total
+    if not hasattr(problem, '_cornersHeuristicCache'):
+        problem._cornersHeuristicCache = {}
+    cache = problem._cornersHeuristicCache
+    cacheKey = (position, outstanding)
+    if cacheKey in cache:
+        return cache[cacheKey]
+
+    distanceMaps = cornerMazeDistances(problem)
+    best = None
+    for order in permutations(outstanding):
+        # Maze distance is symmetric, so the map keyed on a corner also gives the
+        # distance from an arbitrary square to that corner.
+        total = distanceMaps[order[0]][position]
+        for current, nextCorner in zip(order, order[1:]):
+            total += distanceMaps[current][nextCorner]
+        if best is None or total < best:
+            best = total
+
+    cache[cacheKey] = best
+    return best
+
+
+class AStarCornersAgent(SearchAgent):
+    "A SearchAgent for the CornersProblem using A* and cornersHeuristic."
+    def __init__(self):
+        self.searchFunction = lambda prob: search.aStarSearch(prob, cornersHeuristic)
+        self.problemType = CornersProblem
 
 
 class FoodSearchProblem:
@@ -305,13 +377,68 @@ class FoodSearchProblem:
 
 def foodHeuristic(state, problem):
     """
-    Your heuristic for the FoodSearchProblem goes here.
+    An admissible and consistent heuristic for FoodSearchProblem using
+    the distance to the nearest food plus the Minimum Spanning Tree (MST)
+    cost of the remaining food items based on true maze distances.
     """
     position, foodGrid = state
     foodList = foodGrid.asList()
     if not foodList:
         return 0
-    return max(util.manhattanDistance(position, food) for food in foodList)
+
+    # Cache pairwise maze distances in problem.heuristicInfo
+    if 'dist_cache' not in problem.heuristicInfo:
+        problem.heuristicInfo['dist_cache'] = {}
+    
+    cache = problem.heuristicInfo['dist_cache']
+
+    def getMazeDistance(p1, p2):
+        if p1 == p2:
+            return 0
+        key = (p1, p2) if p1 < p2 else (p2, p1)
+        if key not in cache:
+            walls = problem.walls
+            queue = util.Queue()
+            queue.push((p1, 0))
+            visited = {p1}
+            dist = 0
+            while not queue.isEmpty():
+                curr, d = queue.pop()
+                if curr == p2:
+                    dist = d
+                    break
+                cx, cy = curr
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nx, ny = cx + dx, cy + dy
+                    if not walls[nx][ny] and (nx, ny) not in visited:
+                        visited.add((nx, ny))
+                        queue.push(((nx, ny), d + 1))
+            cache[key] = dist
+        return cache[key]
+
+    # Distance from Pac-Man to nearest food
+    closest_dist = min(getMazeDistance(position, food) for food in foodList)
+
+    if len(foodList) == 1:
+        return closest_dist
+
+    # Prim's algorithm to calculate MST cost for remaining food items
+    mst_cost = 0
+    unvisited = set(foodList)
+    start_node = unvisited.pop()
+    min_dist = {node: getMazeDistance(start_node, node) for node in unvisited}
+
+    while unvisited:
+        next_node = min(unvisited, key=lambda n: min_dist[n])
+        mst_cost += min_dist[next_node]
+        unvisited.remove(next_node)
+
+        for node in unvisited:
+            d = getMazeDistance(next_node, node)
+            if d < min_dist[node]:
+                min_dist[node] = d
+
+    return closest_dist + mst_cost
 
 
 class ClosestDotSearchAgent(SearchAgent):
