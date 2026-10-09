@@ -125,7 +125,10 @@ def depthFirstSearch(problem):
     return []
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
+    """
+    Search the shallowest nodes in the search tree first.
+    [Question 2 Implementation by Member 2: Atheek Fareez]
+    """
     # Member 2 (Atheek Fareez) - Question 2: Breadth First Search
     # =========================================================================
     # STEP 1: Initialize the Frontier (Fringe) Data Structure
@@ -189,25 +192,71 @@ def breadthFirstSearch(problem):
     return []
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
+    """
+    Search the node of least total cost first.
+    [Question 3 Implementation by Member 2: Atheek Fareez]
+    """
+    # =========================================================================
+    # STEP 1: Initialize the Frontier Data Structure (PriorityQueue)
+    # -------------------------------------------------------------------------
+    # UCS requires a PriorityQueue where each entry is prioritized by its
+    # total cumulative path cost g(n). Nodes with the lowest accumulated cost
+    # are always popped and expanded first.
+    # We use util.PriorityQueue provided by the project framework.
+    # =========================================================================
     frontier = util.PriorityQueue()
+
+    # =========================================================================
+    # STEP 2: Push Initial State with Path and Cost = 0
+    # -------------------------------------------------------------------------
+    # Frontier stores: (state, actions_list, accumulated_cost)
+    # The priority key is the accumulated path cost g(n) = 0.
+    # =========================================================================
     startState = problem.getStartState()
     frontier.push((startState, [], 0), 0)
-    visited = {}
 
+    # =========================================================================
+    # STEP 3: Initialize the Visited Set for Graph Search
+    # -------------------------------------------------------------------------
+    # In UCS with non-negative edge costs, when a node is popped from the
+    # priority queue, the path reaching it is guaranteed to have the optimal
+    # (minimum) path cost. We track expanded states to avoid cycles.
+    # =========================================================================
+    visited = set()
+
+    # =========================================================================
+    # STEP 4: Main Search Loop
+    # -------------------------------------------------------------------------
+    # Expand nodes in increasing order of cumulative path cost g(n) until:
+    # 1. A goal state is reached (returns optimal path), or
+    # 2. The frontier becomes empty (no solution exists).
+    # =========================================================================
     while not frontier.isEmpty():
+        # Pop the state with the lowest total path cost g(n)
         state, actions, cost = frontier.pop()
 
+        # STEP 4.1: Goal Test at Dequeue
+        # In UCS, the goal test MUST be performed upon dequeue (pop),
+        # not upon enqueue, to guarantee mathematical optimality.
         if problem.isGoalState(state):
             return actions
 
-        if state not in visited or cost < visited[state]:
-            visited[state] = cost
-            for successor, action, stepCost in problem.getSuccessors(state):
-                newCost = cost + stepCost
-                if successor not in visited or newCost < visited[successor]:
-                    frontier.update((successor, actions + [action], newCost), newCost)
+        # STEP 4.2: Graph Search Expansion Check
+        # Only expand this state if it has NOT been expanded previously
+        if state not in visited:
+            # Mark this state as expanded
+            visited.add(state)
 
+            # STEP 4.3: Expand Successors (Neighbors)
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in visited:
+                    # Calculate new cumulative cost g(successor) = g(state) + stepCost
+                    newActions = actions + [action]
+                    newCost = cost + stepCost
+                    # Push successor with new cumulative path cost as priority
+                    frontier.push((successor, newActions, newCost), newCost)
+
+    # Return empty list if no path to the goal is found
     return []
 
 def nullHeuristic(state, problem=None):
