@@ -26,8 +26,16 @@ Breadth First Search (BFS) explores the state space level-by-level, ensuring tha
 
 ![Q2 BFS Autograder Result](Member_02_Screenshots/q2_autograder_bfs.png)
 
-### 2.3 Uniform Cost Search (Q3)
-- Uniform Cost Search edge cost traversal.
+### 2.3 Uniform Cost Search (Q3) — Atheek Fareez (IT24103933)
+
+**Logic & Implementation:**  
+Uniform Cost Search (UCS) generalizes Breadth First Search for state spaces with varying transition costs by expanding the node with the lowest cumulative path cost $g(n)$. We implemented UCS in `search.py` using `util.PriorityQueue`, where each entry holds `(state, actions, cost)` and the priority key is the total path cost $g(n)$.
+
+The search begins by pushing the initial state with cost 0. In each step, the node with the lowest cumulative cost is popped from the priority queue. Crucially, the goal test is conducted upon dequeue rather than enqueue to preserve optimality. If the state is not the goal and has not been expanded previously, it is added to the `visited` set. For each successor returned by `problem.getSuccessors(state)`, the cumulative cost $newCost = cost + stepCost$ is computed, and the successor is enqueued with $newCost$ as its priority. Because all step costs are non-negative, UCS guarantees an optimal path solution.
+
+**Autograder Evidence:**
+
+![Q3 UCS Autograder Result](Member_02_Screenshots/q3_autograder_ucs.png)
 
 ## 3. Informed Search & Heuristics (Q4 - Q7)
 - A* Search implementation.
