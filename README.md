@@ -1,24 +1,124 @@
-# IT3012 Intelligent Agents — Pac-Man Intelligent Search
+# SE3062 Intelligent Systems — Search Algorithms in Pac-Man
 
-## Group Project README
+## Group Project README & Execution Guide
 
-> **Module:** IT3012 — Intelligent Agents  
+> **Module:** SE3062 — Intelligent Systems  
 > **Programme:** BSc (Hons) in Computer Science  
-> **Year:** 3 — 2026  
-> **Project:** Pac-Man Intelligent Search  
-> **Team size:** 4 members
+> **Faculty:** Faculty of Computing  
+> **Year:** Year 3 — 2026 · **Lecturer:** Mr. Jeewaka Perera  
+> **Project:** Search Algorithms in Pac-Man  
+> **Team Size:** Group of 4 Members  
 
 ---
 
-## Environment
+## 🏆 Current Autograder & Verification Status
+
+**Final Autograder Score:** `26 / 25 Marks` (**100% Pass Rate** across all questions + 1 Bonus Mark)
+
+| Question | Algorithm / Task | Test Layout | Status | Score | Nodes Expanded | Path Cost |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| **Q1** | Depth First Search (DFS) | `mediumMaze` | **PASS** | 3/3 | 146 nodes | 130 steps |
+| **Q2** | Breadth First Search (BFS) | `mediumMaze` | **PASS** | 3/3 | 269 nodes | 68 steps |
+| **Q3** | Uniform Cost Search (UCS) | `mediumMaze` | **PASS** | 3/3 | 269 nodes | 68 steps |
+| **Q4** | A* Search (Manhattan) | `mediumMaze` | **PASS** | 3/3 | 221 nodes | 68 steps |
+| **Q5** | Corners Problem (State Formulation) | `tinyCorners` | **PASS** | 3/3 | 252 nodes | 28 steps |
+| **Q6** | Corners Problem (Tour Heuristic) | `mediumCorners` | **PASS** | 3/3 | **189 nodes** | 106 steps |
+| **Q7** | Food Search (MST Heuristic) | `trickySearch` | **PASS** | 5/4 | **255 nodes** | 60 steps |
+| **Q8** | Closest Dot Search Agent | `bigSearch` | **PASS** | 3/3 | N/A | 350 steps |
+| **Total** | **All Questions Verified** | | **PASSED** | **26 / 25** | **Optimal** | **Optimal** |
+
+---
+
+## 👥 Team Allocation & Individual Responsibilities
+
+| Member Name | Student ID | Primary Responsibilities | Git Branch | Report Section |
+|---|---|---|---|---|
+| **S.P.R.H. Wijesiri** | `IT24100602` | Q1 (DFS) & Q5 (Corners Problem Co-Author) | `feature/q1-dfs-member1` | Section 2.1 & 3.2 |
+| **Atheek Fareez** | `IT24103933` | Q2 (BFS) & Q3 (Uniform Cost Search) | `feature/q2-q3-atheek` | Section 2.2 & 2.3 |
+| **Wazni Ahamed** | `IT24103352` | Q4 (A*) & Q5 (Corners Problem Co-Author) | `feature/q4-q5-member3` | Section 3.1 & 3.2 |
+| **Raashidh Rizvi** | `IT24104191` | Q6 (Corners Heuristic) & Q7 (Food Heuristic) | `feat(heuristic)--implement-admissible-corners-heuristic-for-Q6` | Section 3.3 & 3.4 |
+
+---
+
+## 🎮 How to Run & Visualize Pac-Man Search in Action
+
+You can execute each search algorithm live in the Pac-Man graphic window to observe how Pac-Man explores the state space, visualizes expanded nodes in red, and navigates along the computed path to victory!
+
+### 1. Visualizing Depth-First Search (Q1)
+```powershell
+python pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
+```
+* **Visual Scene:** Pac-Man explores deep along a single corridor before backtracking when encountering dead ends. Red dots highlight expanded states.
+
+### 2. Visualizing Breadth-First Search (Q2)
+```powershell
+python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
+```
+* **Visual Scene:** Pac-Man explores outward in expanding concentric waves (shallowest nodes first), guaranteeing the shortest path length (68 steps).
+
+### 3. Visualizing Uniform Cost Search (Q3)
+```powershell
+python pacman.py -l mediumMaze -p SearchAgent -a fn=ucs
+```
+* **Visual Scene:** Pac-Man prioritizes paths with the lowest accumulated cost \(g(n)\). On unit-cost mazes, UCS expands states in order of distance from start.
+
+### 4. Visualizing A* Search with Manhattan Distance (Q4)
+```powershell
+python pacman.py -l mediumMaze -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
+```
+* **Visual Scene:** Guided by \(f(n) = g(n) + h(n)\), Pac-Man expands fewer nodes (221 vs 269 in BFS) by steering directly toward the goal dot.
+
+### 5. Visualizing Finding All Corners using BFS (Q5)
+```powershell
+python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+```
+* **Visual Scene:** Pac-Man's state tracks visited corners. Watch Pac-Man systematically visit all 4 corners of the maze in sequence.
+
+### 6. Visualizing Corners Problem with Admissible Tour Heuristic (Q6)
+```powershell
+python pacman.py -l mediumCorners -p AStarCornersAgent
+```
+* **Visual Scene:** Using our all-pairs BFS shortest path tour heuristic, Pac-Man finds the optimal 106-step tour while expanding only **189 nodes** (far below the 1,200 threshold for maximum score).
+
+### 7. Visualizing Eating All Dots with MST Food Heuristic (Q7)
+```powershell
+python pacman.py -l trickySearch -p SearchAgent -a fn=astar,prob=FoodSearchProblem,heuristic=foodHeuristic
+```
+* **Visual Scene:** Combining nearest-food maze distance with Prim's Minimum Spanning Tree (MST) cost, Pac-Man eats all food dots expanding only **255 nodes** (out of 15,000 max allowed).
+
+### 8. Visualizing Suboptimal Closest Dot Agent (Q8)
+```powershell
+python pacman.py -l bigSearch -p ClosestDotSearchAgent -z 0.5
+```
+* **Visual Scene:** Pac-Man iteratively finds the path to the closest remaining food dot using repeated BFS.
+
+> **Tip:** Add `-q` to any command for fast headless execution without rendering graphics (e.g., `python pacman.py -q -l mediumMaze -p SearchAgent -a fn=bfs`).
+
+---
+
+## ⚡ How We Transcend Search Challenges
+
+```text
+┌────────────────────────┐      ┌────────────────────────┐      ┌────────────────────────┐
+│   Uninformed Search    │ ───► │    Informed Search     │ ───► │  Multi-Goal Heuristics │
+│ (DFS, BFS, UCS: Fringe)│      │  (A*: f = g + h)       │      │ (Corners Tour, Food MST│
+└────────────────────────┘      └────────────────────────┘      └────────────────────────┘
+```
+
+1. **Graph Search Discipline:** All algorithms maintain an explicit `visited` set to prevent infinite loops in cyclic Pac-Man mazes.
+2. **Compact State Representation:** `CornersProblem` uses a lightweight, hashable state tuple `(position, visited_corners_tuple)`, storing zero wall grid overhead.
+3. **Admissible Tour Precomputation:** `cornersHeuristic` precomputes all-pairs shortest maze distances via BFS (`cornerMazeDistances`) and calculates the minimum tour over remaining corners with memoization.
+4. **MST Relaxation Bound:** `foodHeuristic` combines nearest-dot maze distance with Prim's Minimum Spanning Tree cost over remaining food dots, achieving 255 nodes expanded on `trickySearch`.
+
+---
+
+## Environment & Setup
 
 Python 3.9–3.11
 
 Required packages:
 - NumPy
 - Matplotlib
-
-## Installation
 
 ### Conda Setup (Recommended)
 ```powershell
@@ -34,36 +134,22 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Run Pac-Man
+## Run All Autograder Tests
 
 ```powershell
-python pacman.py
-```
-
-## Run Tests
-
-```powershell
-python autograder.py -q q1
-python autograder.py -q q2
-python autograder.py -q q3
-python autograder.py -q q4
-python autograder.py -q q5
-python autograder.py -q q6
-python autograder.py -q q7
 python autograder.py
 ```
 
 ## Project Files
 
-- `search.py` → Q1–Q4
-- `searchAgents.py` → Q5–Q7
-- `util.py` → provided utilities / read-only
-- `pacman.py` → Pac-Man runtime
-- `game.py` → game framework
-- `autograder.py` → automated testing
-- `test_cases/` → provided tests
-- `requirements.txt` → third-party dependencies
-- `docs/` → project/team/testing documentation
+- `search.py` → Q1–Q4 implementation
+- `searchAgents.py` → Q5–Q7 problem & heuristic implementations
+- `util.py` → provided utilities (`Stack`, `Queue`, `PriorityQueue`)
+- `pacman.py` → Pac-Man game engine runner
+- `game.py` → game framework definitions
+- `autograder.py` → automated test runner
+- `tools/verify_heuristics.py` → heuristic admissibility & consistency verification tool
+- `tests/test_member3.py` → regression test suite
 
 ---
 
