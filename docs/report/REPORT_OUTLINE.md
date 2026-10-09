@@ -35,7 +35,9 @@ The search begins by pushing the initial state with cost 0. In each step, the no
 
 **Autograder Evidence:**
 
-![Q3 UCS Autograder Result](Member_02_Screenshots/q3_autograder_ucs.png)
+![Q3 UCS Autograder Result (Part 1)](Member_02_Screenshots/q3_autograder_ucs_1.png)
+
+![Q3 UCS Autograder Result (Part 2 - Full 4/4 Score)](Member_02_Screenshots/q3_autograder_ucs_2.png)
 
 ## 3. Informed Search & Heuristics (Q4 - Q7)
 - A* Search implementation.
