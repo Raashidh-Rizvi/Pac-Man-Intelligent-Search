@@ -1,8 +1,8 @@
 # Requirements
 
 ## Software Environment
-- **Python Version:** Python 3.11+
-- **Key Packages:** `numpy`, `matplotlib` (for analytics/visualization if required)
+- **Python Version:** Python 3.9–3.11 (required by the assignment)
+- **Key Packages:** none required by the assignment (`numpy`/`matplotlib` only for optional team tooling)
 - **Framework:** UC Berkeley Pac-Man AI (Search assignment)
 
 ## Constraint Compliance

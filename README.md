@@ -13,7 +13,9 @@
 
 ## 🏆 Current Autograder & Verification Status
 
-**Final Autograder Score:** `26 / 25 Marks` (**100% Pass Rate** across all questions + 1 Bonus Mark)
+**Local Autograder Result:** all test cases for Q1–Q7 **PASS** (`python autograder.py`).
+
+> The official group autograder component is **40 marks for Q1–Q7** (Q1–Q4: 4 each, Q5: 8, Q6: 8, Q7: 8; Q6/Q7 are graded by nodes expanded). The `26/25` total printed by the local `autograder.py` uses the original Berkeley weights and is **not** the assignment mark. Q8 is not graded by the assignment.
 
 | Question | Algorithm / Task | Test Layout | Status | Score | Nodes Expanded | Path Cost |
 |:---|:---|:---|:---:|:---:|:---:|:---:|
@@ -25,7 +27,7 @@
 | **Q6** | Corners Problem (Tour Heuristic) | `mediumCorners` | **PASS** | 3/3 | **189 nodes** | 106 steps |
 | **Q7** | Food Search (MST Heuristic) | `trickySearch` | **PASS** | 5/4 | **255 nodes** | 60 steps |
 | **Q8** | Closest Dot Search Agent | `bigSearch` | **PASS** | 3/3 | N/A | 350 steps |
-| **Total** | **All Questions Verified** | | **PASSED** | **26 / 25** | **Optimal** | **Optimal** |
+| **Total** | **All Questions Verified** | | **PASSED** | Local autograder: 26/25 (Berkeley weights) | **Optimal** | **Optimal** |
 
 ---
 
@@ -148,8 +150,10 @@ python autograder.py
 - `pacman.py` → Pac-Man game engine runner
 - `game.py` → game framework definitions
 - `autograder.py` → automated test runner
-- `tools/verify_heuristics.py` → heuristic admissibility & consistency verification tool
-- `tests/test_member3.py` → regression test suite
+- `tools/verify_heuristics.py` → heuristic admissibility & consistency verification tool (team helper, **not** submitted)
+- `tests/test_member3.py` → regression test suite (team helper, **not** submitted)
+
+Only `search.py` and `searchAgents.py` are edited and submitted; all other skeleton files are unchanged. No function, class or file names are changed.
 
 ---
 

@@ -72,7 +72,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def depthFirstSearch(problem):
+def depthFirstSearch(problem: SearchProblem):
     """
     Search the deepest nodes in the search tree first.
 
@@ -124,11 +124,8 @@ def depthFirstSearch(problem):
     # Return empty path if no solution exists
     return []
 
-def breadthFirstSearch(problem):
-    """
-    Search the shallowest nodes in the search tree first.
-    [Question 2 Implementation by Member 2: Atheek Fareez]
-    """
+def breadthFirstSearch(problem: SearchProblem):
+    """Search the shallowest nodes in the search tree first."""
     # Member 2 (Atheek Fareez) - Question 2: Breadth First Search
     # =========================================================================
     # STEP 1: Initialize the Frontier (Fringe) Data Structure
@@ -191,11 +188,8 @@ def breadthFirstSearch(problem):
     # Return empty list if no path to the goal is found
     return []
 
-def uniformCostSearch(problem):
-    """
-    Search the node of least total cost first.
-    [Question 3 Implementation by Member 2: Atheek Fareez]
-    """
+def uniformCostSearch(problem: SearchProblem):
+    """Search the node of least total cost first."""
     # =========================================================================
     # STEP 1: Initialize the Frontier Data Structure (PriorityQueue)
     # -------------------------------------------------------------------------
@@ -266,7 +260,7 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def aStarSearch(problem, heuristic=nullHeuristic):
+def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     frontier = util.PriorityQueue()
     startState = problem.getStartState()
