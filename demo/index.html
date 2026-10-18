@@ -584,12 +584,17 @@
                   <option value="medium">Medium Maze (Classic)</option>
                   <option value="small">Small Maze</option>
                   <option value="tiny">Tiny Maze</option>
+                  <option value="tinyCorners">Tiny Corners (Q6 Benchmark - 4 Corners)</option>
+                  <option value="mediumCorners">Medium Corners (Q6 - 4 Corners)</option>
+                  <option value="trickySearch">Tricky Search (Q7 Benchmark - Food MST)</option>
                 </select>
                 <select class="algo-select" id="algoSelect">
                   <option value="bfs">Breadth-First (BFS - Q2) [M2: Atheek]</option>
                   <option value="ucs">Uniform Cost (UCS - Q3) [M2: Atheek]</option>
                   <option value="dfs">Depth-First (DFS - Q1) [M1: Wijesiri]</option>
                   <option value="astar">A* Search (AStar - Q4) [M3: Wazni]</option>
+                  <option value="astar-q6">A* Corners Heuristic (Q6) [M4: Raashidh]</option>
+                  <option value="astar-q7">A* Food Heuristic (Q7) [M4: Raashidh]</option>
                 </select>
               </div>
             </div>
@@ -600,11 +605,14 @@
             <!-- Canvas Legend -->
             <div style="display: flex; gap: 16px; font-size: 11px; margin-top: 12px; color: var(--text-secondary); flex-wrap: wrap; justify-content: center;">
               <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #facc15; border-radius: 50%; display: inline-block;"></span> Pac-Man (Start)</span>
-              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span> Food / Goal</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span> Goal / Food Dot</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #ec4899; transform: rotate(45deg); display: inline-block;"></span> Unvisited Corner (Q6)</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #10b981; border-radius: 50%; display: inline-block;"></span> Visited Corner (Q6)</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 14px; height: 2px; background: #34d399; display: inline-block;"></span> Prim's MST Edge (Q7)</span>
               <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #0c152c; border: 1px solid #3b82f6; border-radius: 2px; display: inline-block;"></span> Wall</span>
               <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: rgba(168, 85, 247, 0.45); border-radius: 2px; display: inline-block;"></span> Visited / Closed</span>
               <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: rgba(16, 185, 129, 0.6); border-radius: 2px; display: inline-block;"></span> Frontier Set</span>
-              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #fbbf24; border-radius: 2px; display: inline-block;"></span> Optimal Solution</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #fbbf24; border-radius: 2px; display: inline-block;"></span> Optimal Solution Path</span>
             </div>
 
             <!-- Sim Controls -->

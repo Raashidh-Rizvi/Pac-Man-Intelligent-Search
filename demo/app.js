@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
       greeting: "Member 4 Focus: Raashidh Rizvi",
       subtitle: "Q6 Corners Heuristic & Q7 Food Search Heuristic (searchAgents.py)",
       status: "Member 4: Q6 & Q7 Verified",
-      highlightAlgo: "astar",
+      highlightAlgo: "astar-q6",
+      highlightMaze: "tinyCorners",
       nodes: ["node-heuristics", "node-food", "node-corners"],
       metrics: {
         val1: "Q6 & Q7", lbl1: "Assigned Questions", b1: "Heuristics Lead", s1: "searchAgents.py",
@@ -264,7 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (firstNode) firstNode.click();
     }
 
-    // 6. Sync Pathfinding Simulator Algorithm
+    // 6. Sync Pathfinding Simulator Algorithm & Maze
+    if (profile.highlightMaze) {
+      mazeSelect.value = profile.highlightMaze;
+    }
     if (profile.highlightAlgo) {
       algoSelect.value = profile.highlightAlgo;
       updateSimulatorAttribution();
@@ -285,6 +289,10 @@ document.addEventListener('DOMContentLoaded', () => {
       simMemberAttribution.textContent = "Active Algorithm: UCS (Q3) • Lead: Atheek Fareez (Member 2)";
     } else if (val === 'astar') {
       simMemberAttribution.textContent = "Active Algorithm: A* (Q4) • Lead: Wazni Ahamed (Member 3)";
+    } else if (val === 'astar-q6') {
+      simMemberAttribution.textContent = "Active Algorithm: A* Corners Heuristic (Q6) • Lead: Raashidh Rizvi (Member 4)";
+    } else if (val === 'astar-q7') {
+      simMemberAttribution.textContent = "Active Algorithm: A* Food Heuristic with Prim's MST (Q7) • Lead: Raashidh Rizvi (Member 4)";
     }
   }
 
@@ -410,6 +418,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const mazes = {
     medium: {
+      name: "Medium Maze (Classic)",
+      type: "single",
       cols: 28, rows: 17,
       start: { x: 1, y: 1 },
       goal: { x: 26, y: 15 },
@@ -434,6 +444,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     small: {
+      name: "Small Maze",
+      type: "single",
       cols: 16, rows: 10,
       start: { x: 1, y: 1 },
       goal: { x: 14, y: 8 },
@@ -451,6 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
     tiny: {
+      name: "Tiny Maze",
+      type: "single",
       cols: 10, rows: 6,
       start: { x: 1, y: 1 },
       goal: { x: 8, y: 4 },
@@ -461,6 +475,76 @@ document.addEventListener('DOMContentLoaded', () => {
         [1,0,0,0,0,0,0,1,0,1],
         [1,0,1,1,1,1,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1]
+      ]
+    },
+    tinyCorners: {
+      name: "Tiny Corners (Q6 Benchmark)",
+      type: "corners",
+      cols: 8, rows: 8,
+      start: { x: 4, y: 2 },
+      corners: [
+        { x: 1, y: 1 },
+        { x: 6, y: 1 },
+        { x: 1, y: 6 },
+        { x: 6, y: 6 }
+      ],
+      grid: [
+        [1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,1],
+        [1,0,1,1,1,1,0,1],
+        [1,0,1,0,0,0,0,1],
+        [1,0,1,0,1,1,1,1],
+        [1,0,1,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1]
+      ]
+    },
+    mediumCorners: {
+      name: "Medium Corners (Q6)",
+      type: "corners",
+      cols: 30, rows: 14,
+      start: { x: 5, y: 12 },
+      corners: [
+        { x: 1, y: 1 },
+        { x: 28, y: 1 },
+        { x: 1, y: 12 },
+        { x: 28, y: 12 }
+      ],
+      grid: [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,0,0,0,0,0,0,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,1],
+        [1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,0,1,1,1],
+        [1,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
+        [1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,0,1,0,0,0,1],
+        [1,1,1,0,1,0,1,1,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1,0,1,0,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+        [1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,0,1],
+        [1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,1,0,1,1,1,0,1],
+        [1,0,0,0,1,0,1,1,1,1,1,0,0,0,0,0,0,1,0,1,1,1,0,1,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ]
+    },
+    trickySearch: {
+      name: "Tricky Search (Q7 Food MST)",
+      type: "food",
+      cols: 20, rows: 7,
+      start: { x: 9, y: 3 },
+      food: [
+        { x: 1, y: 1 }, { x: 13, y: 1 }, { x: 14, y: 1 },
+        { x: 1, y: 2 }, { x: 4, y: 2 }, { x: 7, y: 2 }, { x: 10, y: 2 }, { x: 13, y: 2 },
+        { x: 1, y: 5 }, { x: 2, y: 5 }, { x: 3, y: 5 }, { x: 4, y: 5 }, { x: 5, y: 5 }
+      ],
+      grid: [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+        [1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
       ]
     }
   };
@@ -476,22 +560,185 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeCurrentNode = null;
   let stepLog = [];
 
+  // =========================================================================
+  // HEURISTIC ENGINES: MANHATTAN, BFS MAZE DISTANCE, CORNERS & FOOD PRIM'S MST
+  // =========================================================================
   function getManhattan(a, b) {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
   }
 
-  function stateKey(pos) {
-    return `${pos.x},${pos.y}`;
+  const mazeDistCache = {};
+  function getMazeDistance(p1, p2, maze) {
+    if (p1.x === p2.x && p1.y === p2.y) return 0;
+    const cacheKey = `${maze.name || ''}:${p1.x},${p1.y}->${p2.x},${p2.y}`;
+    const cacheKeyRev = `${maze.name || ''}:${p2.x},${p2.y}->${p1.x},${p1.y}`;
+    if (mazeDistCache[cacheKey] !== undefined) return mazeDistCache[cacheKey];
+    if (mazeDistCache[cacheKeyRev] !== undefined) return mazeDistCache[cacheKeyRev];
+
+    const q = [{ x: p1.x, y: p1.y, d: 0 }];
+    const seen = new Set([`${p1.x},${p1.y}`]);
+    let distFound = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+
+    while (q.length > 0) {
+      const cur = q.shift();
+      if (cur.x === p2.x && cur.y === p2.y) {
+        distFound = cur.d;
+        break;
+      }
+      const dirs = [{dx:0,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0}];
+      for (const dir of dirs) {
+        const nx = cur.x + dir.dx;
+        const ny = cur.y + dir.dy;
+        if (nx >= 0 && nx < maze.cols && ny >= 0 && ny < maze.rows && maze.grid[ny][nx] === 0) {
+          const k = `${nx},${ny}`;
+          if (!seen.has(k)) {
+            seen.add(k);
+            q.push({ x: nx, y: ny, d: cur.d + 1 });
+          }
+        }
+      }
+    }
+    mazeDistCache[cacheKey] = distFound;
+    mazeDistCache[cacheKeyRev] = distFound;
+    return distFound;
   }
 
+  // Q6: cornersHeuristic - Exact minimal tour over unvisited corners
+  function cornersHeuristic(pos, unvisited, maze) {
+    if (!unvisited || unvisited.length === 0) return 0;
+    if (unvisited.length === 1) return getMazeDistance(pos, unvisited[0], maze);
+
+    function getPermutations(arr) {
+      if (arr.length <= 1) return [arr];
+      const res = [];
+      for (let i = 0; i < arr.length; i++) {
+        const rest = [...arr.slice(0, i), ...arr.slice(i + 1)];
+        const subPerms = getPermutations(rest);
+        for (const sp of subPerms) res.push([arr[i], ...sp]);
+      }
+      return res;
+    }
+
+    const perms = getPermutations(unvisited);
+    let minCost = Infinity;
+    for (const p of perms) {
+      let cost = getMazeDistance(pos, p[0], maze);
+      for (let i = 0; i < p.length - 1; i++) {
+        cost += getMazeDistance(p[i], p[i+1], maze);
+      }
+      if (cost < minCost) minCost = cost;
+    }
+    return minCost;
+  }
+
+  // Q7: foodHeuristic - Nearest Dot BFS + Prim's MST of remaining food dots
+  function foodHeuristic(pos, unvisited, maze) {
+    if (!unvisited || unvisited.length === 0) return 0;
+    let nearestDist = Infinity;
+    for (const f of unvisited) {
+      const d = getMazeDistance(pos, f, maze);
+      if (d < nearestDist) nearestDist = d;
+    }
+    if (unvisited.length === 1) return nearestDist;
+
+    const inTree = new Set([0]);
+    let mstCost = 0;
+    const minDist = new Array(unvisited.length);
+    for (let i = 1; i < unvisited.length; i++) {
+      minDist[i] = getMazeDistance(unvisited[0], unvisited[i], maze);
+    }
+    while (inTree.size < unvisited.length) {
+      let bestIdx = -1;
+      let bestVal = Infinity;
+      for (let i = 0; i < unvisited.length; i++) {
+        if (!inTree.has(i) && minDist[i] < bestVal) {
+          bestVal = minDist[i];
+          bestIdx = i;
+        }
+      }
+      if (bestIdx === -1) break;
+      inTree.add(bestIdx);
+      mstCost += bestVal;
+      for (let i = 0; i < unvisited.length; i++) {
+        if (!inTree.has(i)) {
+          const d = getMazeDistance(unvisited[bestIdx], unvisited[i], maze);
+          if (d < minDist[i]) minDist[i] = d;
+        }
+      }
+    }
+    return nearestDist + mstCost;
+  }
+
+  // Helper to extract Prim's MST edges for visual rendering in drawMaze()
+  function getPrimEdges(unvisited, maze) {
+    if (!unvisited || unvisited.length <= 1) return [];
+    const inTree = new Set([0]);
+    const parent = new Array(unvisited.length).fill(0);
+    const minDist = new Array(unvisited.length);
+    for (let i = 1; i < unvisited.length; i++) {
+      minDist[i] = getMazeDistance(unvisited[0], unvisited[i], maze);
+      parent[i] = 0;
+    }
+    const edges = [];
+    while (inTree.size < unvisited.length) {
+      let bestIdx = -1;
+      let bestVal = Infinity;
+      for (let i = 0; i < unvisited.length; i++) {
+        if (!inTree.has(i) && minDist[i] < bestVal) {
+          bestVal = minDist[i];
+          bestIdx = i;
+        }
+      }
+      if (bestIdx === -1) break;
+      edges.push({ from: unvisited[parent[bestIdx]], to: unvisited[bestIdx] });
+      inTree.add(bestIdx);
+      for (let i = 0; i < unvisited.length; i++) {
+        if (!inTree.has(i)) {
+          const d = getMazeDistance(unvisited[bestIdx], unvisited[i], maze);
+          if (d < minDist[i]) {
+            minDist[i] = d;
+            parent[i] = bestIdx;
+          }
+        }
+      }
+    }
+    return edges;
+  }
+
+  // =========================================================================
+  // SEARCH INITIALIZATION & SIMULATOR CONTROLS
+  // =========================================================================
   function initSearch() {
     clearTimeout(timerId);
     isRunning = false;
     playIcon.textContent = "▶";
     playText.textContent = "Start Search";
 
-    const selectedMazeKey = mazeSelect.value;
-    currentMaze = mazes[selectedMazeKey] || mazes.medium;
+    const algo = algoSelect.value;
+    let selectedMazeKey = mazeSelect.value;
+
+    // Smart maze & algorithm coordination
+    if (algo === 'astar-q6') {
+      if (selectedMazeKey !== 'tinyCorners' && selectedMazeKey !== 'mediumCorners') {
+        selectedMazeKey = 'tinyCorners';
+        mazeSelect.value = 'tinyCorners';
+      }
+    } else if (algo === 'astar-q7') {
+      if (selectedMazeKey !== 'trickySearch') {
+        selectedMazeKey = 'trickySearch';
+        mazeSelect.value = 'trickySearch';
+      }
+    } else {
+      if (selectedMazeKey === 'tinyCorners' || selectedMazeKey === 'mediumCorners') {
+        algoSelect.value = 'astar-q6';
+        updateSimulatorAttribution();
+      } else if (selectedMazeKey === 'trickySearch') {
+        algoSelect.value = 'astar-q7';
+        updateSimulatorAttribution();
+      }
+    }
+
+    currentMaze = mazes[mazeSelect.value] || mazes.medium;
 
     frontier = [];
     visited = new Set();
@@ -501,36 +748,59 @@ document.addEventListener('DOMContentLoaded', () => {
     stepLog = [];
 
     const start = currentMaze.start;
-    const goal = currentMaze.goal;
-    const algo = algoSelect.value;
+    const currentAlgo = algoSelect.value;
 
     let initPriority = 0;
-    if (algo === 'ucs') initPriority = 0;
-    if (algo === 'astar') initPriority = getManhattan(start, goal);
+    let initialUnvisited = [];
+
+    if (currentAlgo === 'ucs') {
+      initPriority = 0;
+    } else if (currentAlgo === 'astar') {
+      initPriority = getManhattan(start, currentMaze.goal || { x: currentMaze.cols - 2, y: currentMaze.rows - 2 });
+    } else if (currentAlgo === 'astar-q6') {
+      initialUnvisited = currentMaze.corners ? currentMaze.corners.map(c => ({ x: c.x, y: c.y })) : [];
+      initialUnvisited = initialUnvisited.filter(c => !(c.x === start.x && c.y === start.y));
+      initPriority = cornersHeuristic(start, initialUnvisited, currentMaze);
+    } else if (currentAlgo === 'astar-q7') {
+      initialUnvisited = currentMaze.food ? currentMaze.food.map(f => ({ x: f.x, y: f.y })) : [];
+      initialUnvisited = initialUnvisited.filter(f => !(f.x === start.x && f.y === start.y));
+      initPriority = foodHeuristic(start, initialUnvisited, currentMaze);
+    }
 
     frontier.push({
       state: { x: start.x, y: start.y },
+      unvisited: initialUnvisited,
       path: [start],
       cost: 0,
       priority: initPriority
     });
 
-    if (algo === 'bfs') {
+    if (currentAlgo === 'bfs') {
       dataStructureName.textContent = "util.Queue (FIFO) [Atheek - M2]";
-    } else if (algo === 'dfs') {
+    } else if (currentAlgo === 'dfs') {
       dataStructureName.textContent = "util.Stack (LIFO) [Wijesiri - M1]";
-    } else if (algo === 'ucs') {
+    } else if (currentAlgo === 'ucs') {
       dataStructureName.textContent = "util.PriorityQueue (Priority: g(n)) [Atheek - M2]";
-    } else if (algo === 'astar') {
+    } else if (currentAlgo === 'astar') {
       dataStructureName.textContent = "util.PriorityQueue (Priority: g(n) + h(n)) [Wazni - M3]";
+    } else if (currentAlgo === 'astar-q6') {
+      dataStructureName.textContent = "util.PriorityQueue (Priority: f(n) = g(n) + cornersHeuristic) [Raashidh - M4]";
+    } else if (currentAlgo === 'astar-q7') {
+      dataStructureName.textContent = "util.PriorityQueue (Priority: f(n) = g(n) + Prim_MST(dots)) [Raashidh - M4]";
     }
 
     simStatusBadge.textContent = "Initialized";
     simStatusBadge.style.color = "#34d399";
     simStatusBadge.style.background = "rgba(16, 185, 129, 0.12)";
 
-    addLog(`Initialized ${algo.toUpperCase()} search on ${selectedMazeKey} maze.`);
-    addLog(`Start Position: (${start.x}, ${start.y}), Goal: (${goal.x}, ${goal.y}).`);
+    addLog(`Initialized ${currentAlgo.toUpperCase()} search on ${currentMaze.name || selectedMazeKey}.`);
+    if (currentMaze.type === 'corners') {
+      addLog(`Goal: Visit all 4 corners (${currentMaze.corners.map(c => `(${c.x},${c.y})`).join(', ')}).`);
+    } else if (currentMaze.type === 'food') {
+      addLog(`Goal: Consume all ${currentMaze.food.length} food dots with Prim's MST Guidance.`);
+    } else {
+      addLog(`Start: (${start.x}, ${start.y}), Goal: (${currentMaze.goal.x}, ${currentMaze.goal.y}).`);
+    }
 
     updateSimulatorAttribution();
     updateTelemetry();
@@ -552,10 +822,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (frontier.length === 0) {
       frontierVisualList.innerHTML = `<span style="color: var(--text-muted);">[Frontier is Empty]</span>`;
     } else {
-      const topItems = frontier.slice(0, 6).map(item => {
-        return `[(${item.state.x},${item.state.y}) c=${item.cost}${algoSelect.value === 'astar' ? ` p=${item.priority}` : ''}]`;
+      const algo = algoSelect.value;
+      const topItems = frontier.slice(0, 5).map(item => {
+        if (algo === 'astar-q6') {
+          return `[(${item.state.x},${item.state.y}) c=${item.cost} corners=${item.unvisited.length} f=${item.priority}]`;
+        } else if (algo === 'astar-q7') {
+          return `[(${item.state.x},${item.state.y}) c=${item.cost} dots=${item.unvisited.length} f=${item.priority}]`;
+        } else {
+          return `[(${item.state.x},${item.state.y}) c=${item.cost}${algo === 'astar' ? ` f=${item.priority}` : ''}]`;
+        }
       });
-      frontierVisualList.innerHTML = topItems.join(' → ') + (frontier.length > 6 ? ` ... +${frontier.length - 6} more` : '');
+      frontierVisualList.innerHTML = topItems.join(' → ') + (frontier.length > 5 ? ` ... +${frontier.length - 5} more` : '');
     }
   }
 
@@ -586,18 +863,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     activeCurrentNode = node;
-    const currKey = stateKey(node.state);
 
-    const goal = currentMaze.goal;
-    if (node.state.x === goal.x && node.state.y === goal.y) {
-      finalPath = node.path;
-      simStatusBadge.textContent = "Goal Reached! (Optimal)";
-      simStatusBadge.style.color = "#fbbf24";
-      addLog(`🎯 GOAL FOUND at (${goal.x}, ${goal.y})! Path Cost: ${node.cost} actions.`);
-      addLog(`Summary: Expanded ${expandedCount} nodes. Solution path highlighted.`);
-      updateTelemetry();
-      drawMaze();
-      return false;
+    // Check Goal Condition upon dequeue
+    if (algo === 'astar-q6') {
+      if (node.unvisited.length === 0) {
+        finalPath = node.path;
+        simStatusBadge.textContent = "All 4 Corners Visited! (Optimal)";
+        simStatusBadge.style.color = "#34d399";
+        addLog(`🎯 ALL 4 CORNERS VISITED! Path length: ${node.cost} steps.`);
+        addLog(`Summary: Expanded ${expandedCount} states. Exact Admissible Q6 corners tour.`);
+        updateTelemetry();
+        drawMaze();
+        return false;
+      }
+    } else if (algo === 'astar-q7') {
+      if (node.unvisited.length === 0) {
+        finalPath = node.path;
+        simStatusBadge.textContent = "All Food Eaten! (Optimal)";
+        simStatusBadge.style.color = "#34d399";
+        addLog(`🎯 ALL FOOD CONSUMED! Path length: ${node.cost} steps.`);
+        addLog(`Summary: Expanded ${expandedCount} states. Prim's MST Heuristic Q7.`);
+        updateTelemetry();
+        drawMaze();
+        return false;
+      }
+    } else {
+      const goal = currentMaze.goal;
+      if (goal && node.state.x === goal.x && node.state.y === goal.y) {
+        finalPath = node.path;
+        simStatusBadge.textContent = "Goal Reached! (Optimal)";
+        simStatusBadge.style.color = "#fbbf24";
+        addLog(`🎯 GOAL FOUND at (${goal.x}, ${goal.y})! Path Cost: ${node.cost} actions.`);
+        addLog(`Summary: Expanded ${expandedCount} nodes. Solution path highlighted.`);
+        updateTelemetry();
+        drawMaze();
+        return false;
+      }
+    }
+
+    // Visited Key
+    let currKey = `${node.state.x},${node.state.y}`;
+    if (algo === 'astar-q6' || algo === 'astar-q7') {
+      const unvSorted = node.unvisited.map(u => `${u.x},${u.y}`).sort().join(';');
+      currKey = `${node.state.x},${node.state.y}|${unvSorted}`;
     }
 
     if (visited.has(currKey)) {
@@ -621,22 +929,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (nx >= 0 && nx < currentMaze.cols && ny >= 0 && ny < currentMaze.rows) {
         if (currentMaze.grid[ny][nx] === 0) {
-          const nKey = `${nx},${ny}`;
-          if (!visited.has(nKey)) {
-            const nextCost = node.cost + 1;
-            let priority = nextCost;
+          const nextCost = node.cost + 1;
 
-            if (algo === 'astar') {
-              priority = nextCost + getManhattan({ x: nx, y: ny }, goal);
+          if (algo === 'astar-q6') {
+            const nextUnvisited = node.unvisited.filter(c => !(c.x === nx && c.y === ny));
+            const nKey = `${nx},${ny}|${nextUnvisited.map(c => `${c.x},${c.y}`).sort().join(';')}`;
+            if (!visited.has(nKey)) {
+              const priority = nextCost + cornersHeuristic({ x: nx, y: ny }, nextUnvisited, currentMaze);
+              frontier.push({
+                state: { x: nx, y: ny },
+                unvisited: nextUnvisited,
+                path: [...node.path, { x: nx, y: ny }],
+                cost: nextCost,
+                priority: priority
+              });
+              childCount++;
             }
-
-            frontier.push({
-              state: { x: nx, y: ny },
-              path: [...node.path, { x: nx, y: ny }],
-              cost: nextCost,
-              priority: priority
-            });
-            childCount++;
+          } else if (algo === 'astar-q7') {
+            const nextUnvisited = node.unvisited.filter(f => !(f.x === nx && f.y === ny));
+            const nKey = `${nx},${ny}|${nextUnvisited.map(f => `${f.x},${f.y}`).sort().join(';')}`;
+            if (!visited.has(nKey)) {
+              const priority = nextCost + foodHeuristic({ x: nx, y: ny }, nextUnvisited, currentMaze);
+              frontier.push({
+                state: { x: nx, y: ny },
+                unvisited: nextUnvisited,
+                path: [...node.path, { x: nx, y: ny }],
+                cost: nextCost,
+                priority: priority
+              });
+              childCount++;
+            }
+          } else {
+            const nKey = `${nx},${ny}`;
+            if (!visited.has(nKey)) {
+              let priority = nextCost;
+              if (algo === 'astar') {
+                priority = nextCost + getManhattan({ x: nx, y: ny }, currentMaze.goal);
+              }
+              frontier.push({
+                state: { x: nx, y: ny },
+                path: [...node.path, { x: nx, y: ny }],
+                cost: nextCost,
+                priority: priority
+              });
+              childCount++;
+            }
           }
         }
       }
@@ -705,6 +1042,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearch();
   });
 
+  // =========================================================================
+  // MAZE CANVAS RENDERING (CORNERS, FOOD MST, PACMAN & SEARCH WAVEFRONT)
+  // =========================================================================
   function drawMaze() {
     const w = canvas.width;
     const h = canvas.height;
@@ -713,6 +1053,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cellW = w / currentMaze.cols;
     const cellH = h / currentMaze.rows;
 
+    // 1. Draw Grid Walls & Corridors
     for (let r = 0; r < currentMaze.rows; r++) {
       for (let c = 0; c < currentMaze.cols; c++) {
         const isWall = currentMaze.grid[r][c] === 1;
@@ -732,12 +1073,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // 2. Draw Visited / Closed Set
     ctx.fillStyle = "rgba(168, 85, 247, 0.35)";
     for (const key of visited) {
-      const [vx, vy] = key.split(',').map(Number);
+      const coordPart = key.includes('|') ? key.split('|')[0] : key;
+      const [vx, vy] = coordPart.split(',').map(Number);
       ctx.fillRect(vx * cellW + 1, vy * cellH + 1, cellW - 2, cellH - 2);
     }
 
+    // 3. Draw Frontier Set
     ctx.fillStyle = "rgba(16, 185, 129, 0.5)";
     ctx.strokeStyle = "#10b981";
     ctx.lineWidth = 1.5;
@@ -748,6 +1092,109 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.strokeRect(fx + 2, fy + 2, cellW - 4, cellH - 4);
     }
 
+    // 4. Draw Q7 Food & Prim's MST Spanning Tree
+    if (currentMaze.type === 'food' || currentMaze.food) {
+      const unvisited = activeCurrentNode ? (activeCurrentNode.unvisited || []) : currentMaze.food;
+      const unvisitedSet = new Set(unvisited.map(f => `${f.x},${f.y}`));
+
+      // Draw Prim's MST edges in real-time between remaining dots
+      if (unvisited.length > 1) {
+        const edges = getPrimEdges(unvisited, currentMaze);
+        ctx.save();
+        ctx.strokeStyle = "rgba(52, 211, 153, 0.45)";
+        ctx.lineWidth = Math.max(1.5, cellW * 0.12);
+        ctx.setLineDash([4, 4]);
+        for (const edge of edges) {
+          const x1 = edge.from.x * cellW + cellW / 2;
+          const y1 = edge.from.y * cellH + cellH / 2;
+          const x2 = edge.to.x * cellW + cellW / 2;
+          const y2 = edge.to.y * cellH + cellH / 2;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Draw all food pellets
+      for (const dot of currentMaze.food) {
+        const dx = dot.x * cellW + cellW / 2;
+        const dy = dot.y * cellH + cellH / 2;
+        const isRemaining = unvisitedSet.has(`${dot.x},${dot.y}`);
+
+        if (isRemaining) {
+          ctx.beginPath();
+          ctx.arc(dx, dy, Math.min(cellW, cellH) * 0.24, 0, Math.PI * 2);
+          ctx.fillStyle = "#fbbf24";
+          ctx.shadowColor = "#f59e0b";
+          ctx.shadowBlur = 6;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          // Eaten food dot indicator
+          ctx.beginPath();
+          ctx.arc(dx, dy, Math.min(cellW, cellH) * 0.1, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+          ctx.fill();
+        }
+      }
+    }
+
+    // 5. Draw Q6 Corners (Unvisited vs Visited)
+    if (currentMaze.type === 'corners' || currentMaze.corners) {
+      const unvisited = activeCurrentNode ? (activeCurrentNode.unvisited || []) : currentMaze.corners;
+      const unvisitedSet = new Set(unvisited.map(c => `${c.x},${c.y}`));
+
+      for (const corner of currentMaze.corners) {
+        const cx = corner.x * cellW + cellW / 2;
+        const cy = corner.y * cellH + cellH / 2;
+        const isRemaining = unvisitedSet.has(`${corner.x},${corner.y}`);
+        const size = Math.min(cellW, cellH) * 0.45;
+
+        if (isRemaining) {
+          // Unvisited Corner: Glowing Pink Diamond
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(Math.PI / 4);
+          ctx.fillStyle = "#ec4899";
+          ctx.shadowColor = "#f43f5e";
+          ctx.shadowBlur = 12;
+          ctx.fillRect(-size / 2, -size / 2, size, size);
+          ctx.strokeStyle = "#fff";
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(-size / 2, -size / 2, size, size);
+          ctx.restore();
+        } else {
+          // Visited Corner: Emerald Green Circle
+          ctx.beginPath();
+          ctx.arc(cx, cy, size * 0.45, 0, Math.PI * 2);
+          ctx.fillStyle = "#10b981";
+          ctx.shadowColor = "#34d399";
+          ctx.shadowBlur = 8;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = "#fff";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // 6. Draw Single Goal (for Q1-Q4)
+    if (currentMaze.type === 'single' && currentMaze.goal) {
+      const gx = currentMaze.goal.x * cellW + cellW / 2;
+      const gy = currentMaze.goal.y * cellH + cellH / 2;
+      ctx.beginPath();
+      ctx.arc(gx, gy, Math.min(cellW, cellH) * 0.38, 0, Math.PI * 2);
+      ctx.fillStyle = "#ef4444";
+      ctx.shadowColor = "#ff2a55";
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // 7. Draw Final Solution Path
     if (finalPath && finalPath.length > 0) {
       ctx.beginPath();
       ctx.strokeStyle = "#f59e0b";
@@ -768,16 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.stroke();
     }
 
-    const gx = currentMaze.goal.x * cellW + cellW / 2;
-    const gy = currentMaze.goal.y * cellH + cellH / 2;
-    ctx.beginPath();
-    ctx.arc(gx, gy, Math.min(cellW, cellH) * 0.38, 0, Math.PI * 2);
-    ctx.fillStyle = "#ef4444";
-    ctx.shadowColor = "#ff2a55";
-    ctx.shadowBlur = 10;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
+    // 8. Draw Pac-Man
     const pacPos = activeCurrentNode ? activeCurrentNode.state : currentMaze.start;
     const px = pacPos.x * cellW + cellW / 2;
     const py = pacPos.y * cellH + cellH / 2;
@@ -793,7 +1231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.shadowBlur = 0;
   }
 
-  // =========================================================================
+    // =========================================================================
   // 7. TEAM ARCHITECTURE TOUR & RESET
   // =========================================================================
   const btnQuickTour = document.getElementById('btnQuickTour');
