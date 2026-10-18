@@ -288,6 +288,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // =========================================================================
+  // VIVA DEFENSE FLASHCARD FILTERING & CONTROLS
+  // =========================================================================
+  const vivaCards = document.querySelectorAll('.viva-card');
+  const vivaFilterButtons = document.querySelectorAll('[data-viva-filter]');
+  const btnToggleAllViva = document.getElementById('btnToggleAllViva');
+  let allVivaExpanded = false;
+
+  function filterVivaCards(memberKey) {
+    // 1. Update filter button active states
+    vivaFilterButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.vivaFilter === memberKey);
+    });
+
+    // 2. Filter visibility of cards
+    vivaCards.forEach(card => {
+      const cardMember = card.dataset.member;
+      if (memberKey === 'all' || cardMember === memberKey) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  vivaFilterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filterKey = btn.dataset.vivaFilter;
+      filterVivaCards(filterKey);
+    });
+  });
+
+  if (btnToggleAllViva) {
+    btnToggleAllViva.addEventListener('click', () => {
+      allVivaExpanded = !allVivaExpanded;
+      vivaCards.forEach(card => {
+        if (card.style.display !== 'none') {
+          card.classList.toggle('expanded', allVivaExpanded);
+        }
+      });
+      btnToggleAllViva.textContent = allVivaExpanded ? '📕 Collapse All' : '📖 Expand All';
+    });
+  }
+
   memberButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       applyMemberFocus(btn.dataset.member);
@@ -330,32 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // =========================================================================
-  // 4. VIVA DEFENSE FILTER ENGINE
-  // =========================================================================
-  const vivaFilterBtns = document.querySelectorAll('.member-pill-btn[data-viva-filter]');
-  const vivaCards = document.querySelectorAll('.viva-card');
-
-  function filterVivaCards(filterKey) {
-    vivaFilterBtns.forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.vivaFilter === filterKey);
-    });
-
-    vivaCards.forEach(card => {
-      const cardMember = card.dataset.member;
-      if (filterKey === 'all' || cardMember === filterKey) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
-  vivaFilterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterVivaCards(btn.dataset.vivaFilter);
-    });
-  });
 
   // =========================================================================
   // 5. SIDEBAR NAVIGATION

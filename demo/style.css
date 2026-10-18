@@ -1075,6 +1075,93 @@ body {
 .node-member-tag.m3 { background: #7c3aed; color: #fff; }
 .node-member-tag.m4 { background: #db2777; color: #fff; }
 
+/* ==========================================================================
+   TEAM VIVA DEFENSE FLASHCARDS & REVIEW SECTION STYLES
+   ========================================================================== */
+.viva-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.viva-card {
+  background: rgba(18, 14, 28, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.viva-card:hover {
+  border-color: rgba(255, 42, 85, 0.4);
+  background: rgba(28, 20, 42, 0.85);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.viva-card::after {
+  content: '▼';
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.viva-card.expanded::after {
+  transform: rotate(180deg);
+  color: var(--crimson-light);
+}
+
+.viva-card[data-member="m1"] { border-left: 3px solid #38bdf8; }
+.viva-card[data-member="m2"] { border-left: 3px solid #34d399; }
+.viva-card[data-member="m3"] { border-left: 3px solid #c084fc; }
+.viva-card[data-member="m4"] { border-left: 3px solid #f472b6; }
+
+.viva-q {
+  font-family: var(--font-heading);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.5;
+  padding-right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.viva-a {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.viva-card.expanded .viva-a {
+  display: block;
+}
+
+.viva-highlight {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1092,4 +1179,5 @@ body {
   .subgroup-grid.cols-3 { grid-template-columns: 1fr; }
   .member-switcher-bar { flex-wrap: wrap; }
 }
+
 

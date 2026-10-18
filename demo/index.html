@@ -1025,12 +1025,15 @@
               <h2>Team Viva Defense Hub (Key Oral Exam Questions for All Members)</h2>
               <p>Direct, structured answers for examiners (Mr. Jeewaka Perera). Filter questions by individual team member.</p>
             </div>
-            <div class="member-switcher-bar" style="padding: 4px 8px; box-shadow: none;">
-              <button class="member-pill-btn active" data-viva-filter="all" style="padding: 4px 10px; font-size: 11px;">All Questions</button>
-              <button class="member-pill-btn" data-viva-filter="m1" style="padding: 4px 10px; font-size: 11px;">Member 1 (DFS/Q5)</button>
-              <button class="member-pill-btn" data-viva-filter="m2" style="padding: 4px 10px; font-size: 11px;">Member 2 (BFS/UCS)</button>
-              <button class="member-pill-btn" data-viva-filter="m3" style="padding: 4px 10px; font-size: 11px;">Member 3 (A*/State)</button>
-              <button class="member-pill-btn" data-viva-filter="m4" style="padding: 4px 10px; font-size: 11px;">Member 4 (Heuristics)</button>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <div class="member-switcher-bar" style="padding: 4px 8px; box-shadow: none;">
+                <button class="member-pill-btn active" data-viva-filter="all" style="padding: 4px 10px; font-size: 11px;">All Questions</button>
+                <button class="member-pill-btn" data-viva-filter="m1" style="padding: 4px 10px; font-size: 11px;">Member 1 (DFS/Q5)</button>
+                <button class="member-pill-btn" data-viva-filter="m2" style="padding: 4px 10px; font-size: 11px;">Member 2 (BFS/UCS)</button>
+                <button class="member-pill-btn" data-viva-filter="m3" style="padding: 4px 10px; font-size: 11px;">Member 3 (A*/State)</button>
+                <button class="member-pill-btn" data-viva-filter="m4" style="padding: 4px 10px; font-size: 11px;">Member 4 (Heuristics)</button>
+              </div>
+              <button id="btnToggleAllViva" class="member-pill-btn" style="padding: 4px 12px; font-size: 11px; background: rgba(255, 42, 85, 0.15); border-color: rgba(255, 42, 85, 0.35); color: #fff; cursor: pointer;">📖 Expand All</button>
             </div>
           </div>
 
@@ -1104,19 +1107,72 @@
             <!-- M4 Questions -->
             <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
               <div class="viva-q">
-                <span style="color: #f472b6">M4 • Q6.</span> What is the difference between an Admissible and a Consistent heuristic?
+                <span style="color: #f472b6">M4 • Q6.</span> What is the difference between an Admissible and a Consistent heuristic, and why does Graph Search require Consistency?
               </div>
               <div class="viva-a">
-                An <span class="viva-highlight">Admissible heuristic</span> never overestimates the true cost to reach the goal: $h(n) \le h^*(n)$. A <span class="viva-highlight">Consistent (monotonic) heuristic</span> also satisfies the triangle inequality: $h(A) \le c(A, B) + h(B)$. Consistency guarantees optimality in Graph Search without needing to reopen closed nodes.
+                An <span class="viva-highlight">Admissible heuristic</span> never overestimates the true minimal cost to the goal: $h(n) \le h^*(n)$. While admissibility guarantees optimality in <em>Tree Search</em>, <span class="viva-highlight">Graph Search requires Consistency (monotonicity)</span>: $h(A) \le c(A, B) + h(B)$ (the triangle inequality). Consistency guarantees that when a node is dequeued from the frontier, its accumulated path cost $g(n)$ is already strictly optimal. This eliminates the need to ever reopen or re-expand nodes already in the closed set.
               </div>
             </div>
 
             <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
               <div class="viva-q">
-                <span style="color: #f472b6">M4 • Q6 & Q7.</span> How do you design an admissible heuristic for Corners & Food search?
+                <span style="color: #f472b6">M4 • Q6.</span> How does cornersHeuristic work step-by-step?
               </div>
               <div class="viva-a">
-                By solving a <span class="viva-highlight">relaxed subproblem</span> where maze walls are ignored. For corners, we take the Manhattan distance to the nearest unvisited corner plus the minimum spanning tree (MST) distance between remaining corners. Because removing walls can only decrease distance, it is guaranteed to be admissible ($h \le h^*$).
+                1. Extract remaining unvisited corners from state tuple <code>((x,y), (c1, c2, c3, c4))</code> where $c_i = \text{False}$.<br>
+                2. If 0 corners remain, return 0 (goal reached).<br>
+                3. Query <code>cornerMazeDistances()</code> for pre-computed BFS maze distances from Pac-Man to corners and between corners.<br>
+                4. Permute all remaining unvisited corners (at most $4! = 24$ permutations).<br>
+                5. For each ordering, compute total travel cost: $\text{dist}(\text{pos} \to c_1) + \sum \text{dist}(c_i, c_{i+1})$.<br>
+                6. Return the <span class="viva-highlight">minimum cost among all permutations</span>. This yields the exact cost of the optimal tour over remaining corners.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q6.</span> Why is cornersHeuristic both Admissible and Consistent?
+              </div>
+              <div class="viva-a">
+                <span class="viva-highlight">Admissibility:</span> Any valid solution path that visits all 4 corners must visit remaining corners in some permutation. Since we take the <em>absolute minimum</em> path across all permutations using true BFS maze distances, the true path cost $h^*(n)$ cannot be less than our estimate: $h(n) \le h^*(n)$.<br>
+                <span class="viva-highlight">Consistency:</span> For any step $s \to s'$, if no corner is visited, the triangle inequality on maze distance guarantees $h(s) \le 1 + h(s')$. If corner $c$ is visited, selecting $c$ as the first stop in the permutation preserves $h(s) \le 1 + h(s')$. Hence $h$ is monotonic.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q7.</span> How does foodHeuristic compute its estimate for all food dots?
+              </div>
+              <div class="viva-a">
+                State is <code>(position, foodGrid)</code>. We decompose the remaining work into a <span class="viva-highlight">two-part heuristic</span>:<br>
+                <div style="margin: 6px 0; padding: 6px 10px; background: rgba(0,0,0,0.3); border-radius: 6px; font-family: var(--font-mono);">
+                  h(n) = mazeDistance(position, nearest_food) + MST_cost(remaining_food)
+                </div>
+                1. Find the nearest food dot using BFS maze distance.<br>
+                2. Build a complete graph where each remaining food dot is a vertex, and edge weights are true BFS maze distances.<br>
+                3. Run <span class="viva-highlight">Prim's Algorithm</span> to compute the Minimum Spanning Tree (MST) cost.<br>
+                4. Sum nearest-food distance and MST cost. Distances are cached in <code>problem.heuristicInfo['dist_cache']</code> to avoid recomputing BFS.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q7.</span> Why is Prim's MST used instead of a Greedy path or Farthest-Food?
+              </div>
+              <div class="viva-a">
+                - <span class="viva-highlight">Farthest-Food</span> only looks at a single dot and ignores the density of remaining dots, resulting in weak pruning (> 12,000 expansions on trickySearch).<br>
+                - Finding the exact shortest tour visiting all food dots is the <span class="viva-highlight">Traveling Salesperson Problem (TSP)</span>, which is NP-hard ($O(n!)$) and impossible to run at every A* state evaluation.<br>
+                - <span class="viva-highlight">MST Relaxation</span>: Any Hamiltonian path visiting all food dots is a spanning tree. The Minimum Spanning Tree is the <em>cheapest possible spanning structure</em>, guaranteeing $\text{Cost}(\text{MST}) \le \text{Cost}(\text{TSP})$. It runs in $O(|V|^2)$ with Prim's algorithm, maintaining strict admissibility while expanding only <span class="viva-highlight">255 nodes</span> (well under the 9,000 limit).
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q6 & Q7.</span> What are your benchmark results and how does caching prevent timeouts?
+              </div>
+              <div class="viva-a">
+                <span class="viva-highlight">Q6 mediumCorners:</span> 189 nodes expanded (threshold: 1,200 for full 8/8, 2,000 for 4/8). Passed with 8/8.<br>
+                <span class="viva-highlight">Q7 trickySearch:</span> 255 nodes expanded (threshold: 9,000 for full 8/8, 15,000 for 4/8). Passed with 8/8.<br>
+                <span class="viva-highlight">Caching Optimization:</span> Without caching, evaluating BFS distances between food dots repeatedly inside the heuristic causes Python to exceed the autograder's 30-second timeout. We cache pairwise BFS maze distances in <code>problem.heuristicInfo['dist_cache']</code> and corner distances in <code>problem._cornerMazeDistances</code>, reducing repeated evaluations from $O(|V| \cdot |E|)$ to $O(1)$ dictionary lookups.
               </div>
             </div>
           </div>
