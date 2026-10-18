@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pac-Man Intelligent Search | Team Demonstration & Architecture Dashboard</title>
+  <meta name="description" content="Comprehensive Explainable AI Demonstration UI for SLIIT SE3062 / IT3012 Intelligent Systems project. Features full 4-member workload ownership (Q1 to Q7), interactive system architecture flow, live pathfinding simulator, and individual Viva defense guides.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+      <div>
+        <div class="brand-logo">
+          <div class="logo-icon">🍒</div>
+          <div class="brand-info">
+            <h2>PacAI<span style="color: var(--crimson-primary)">.</span></h2>
+            <span>Team Search Intelligence</span>
+          </div>
+        </div>
+
+        <ul class="nav-menu">
+          <li>
+            <a href="#section-dashboard" class="nav-item active" data-nav="dashboard">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+              <span>Dashboard Overview</span>
+            </a>
+          </li>
+          <li>
+            <a href="#section-team-workload" class="nav-item" data-nav="team">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span>Member Workloads</span>
+            </a>
+          </li>
+          <li>
+            <a href="#section-architecture" class="nav-item" data-nav="architecture">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+              <span>Architecture Flow</span>
+            </a>
+          </li>
+          <li>
+            <a href="#section-simulator" class="nav-item" data-nav="simulator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Pathfinding Simulator</span>
+            </a>
+          </li>
+          <li>
+            <a href="#section-analytics" class="nav-item" data-nav="analytics">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <span>Algorithm Matrix</span>
+            </a>
+          </li>
+          <li>
+            <a href="#section-viva" class="nav-item" data-nav="viva">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Team Viva Defense</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Active Member Indicator Card in Sidebar -->
+      <div class="sidebar-member-badge" id="sidebarActiveCard">
+        <div class="member-title" id="sbRoleTitle">Selected Member Focus</div>
+        <div class="member-name" id="sbMemberName">All Team Members</div>
+        <div class="member-id" id="sbMemberId">4 Members • Questions Q1 - Q7</div>
+        <div class="member-role" id="sbMemberTag">SLIIT Intelligent Systems</div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN WRAPPER ==================== -->
+    <main class="main-wrapper">
+      <!-- Top Navigation Header -->
+      <header class="top-header">
+        <div class="header-title-block">
+          <h1 id="headerGreeting">Pac-Man Search Architecture & Team Defense</h1>
+          <p id="headerSubtitle">SLIIT Year 3 Sem 1 (SE3062 / IT3012) • Lecturer: Mr. Jeewaka Perera</p>
+        </div>
+        <div class="header-actions">
+          <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            <span id="headerProjectStatus">Team Project: 100% Viva Ready</span>
+          </div>
+          <button class="btn btn-secondary" id="btnResetDemo">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Reset Filters</span>
+          </button>
+          <button class="btn btn-primary" id="btnQuickTour">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>Team Architecture Tour</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Content Body -->
+      <div class="dashboard-content">
+
+        <!-- ==================== MEMBER SWITCHER FILTER BAR ==================== -->
+        <div class="member-switcher-bar">
+          <span class="member-switcher-label">Select Member:</span>
+          <button class="member-pill-btn active" data-member="all">
+            <span class="pill-dot" style="background: #ff2a55;"></span>
+            <span>All Members (Overview)</span>
+          </button>
+          <button class="member-pill-btn" data-member="m1">
+            <span class="pill-dot" style="background: #38bdf8;"></span>
+            <span>M1: Wijesiri (Q1 DFS, Q5)</span>
+          </button>
+          <button class="member-pill-btn" data-member="m2">
+            <span class="pill-dot" style="background: #10b981;"></span>
+            <span>M2: Atheek Fareez (Q2 BFS, Q3 UCS)</span>
+          </button>
+          <button class="member-pill-btn" data-member="m3">
+            <span class="pill-dot" style="background: #a855f7;"></span>
+            <span>M3: Wazni (Q4 A*, Q5 Corners)</span>
+          </button>
+          <button class="member-pill-btn" data-member="m4">
+            <span class="pill-dot" style="background: #ec4899;"></span>
+            <span>M4: Raashidh (Q6 & Q7 Heuristics)</span>
+          </button>
+        </div>
+
+        <!-- 4 Metric Cards (Image 2 Style) -->
+        <section class="metrics-grid" id="section-dashboard">
+          <div class="metric-card" id="metricCard1">
+            <div class="metric-header">
+              <span class="metric-label" id="metricLabel1">Total Questions Implemented</span>
+              <div class="metric-icon">🔍</div>
+            </div>
+            <div class="metric-value" id="metricValue1">7 / 7 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">Q1 - Q7</span></div>
+            <div class="metric-footer">
+              <span class="badge-up" id="metricBadge1">4 Developers</span>
+              <span class="badge-subtext" id="metricSubtext1">Modular architecture</span>
+            </div>
+          </div>
+
+          <div class="metric-card" id="metricCard2">
+            <div class="metric-header">
+              <span class="metric-label" id="metricLabel2">MediumMaze Node Performance</span>
+              <div class="metric-icon">⚡</div>
+            </div>
+            <div class="metric-value" id="metricValue2">68 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">Nodes (BFS/UCS)</span></div>
+            <div class="metric-footer">
+              <span class="badge-up" id="metricBadge2">Optimal Path: 68</span>
+              <span class="badge-subtext" id="metricSubtext2">vs DFS 146 nodes</span>
+            </div>
+          </div>
+
+          <div class="metric-card" id="metricCard3">
+            <div class="metric-header">
+              <span class="metric-label" id="metricLabel3">Heuristic Efficiency (Q6 & Q7)</span>
+              <div class="metric-icon">🎯</div>
+            </div>
+            <div class="metric-value" id="metricValue3">&lt; 1,200 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">Nodes</span></div>
+            <div class="metric-footer">
+              <span class="badge-up" id="metricBadge3">Full 8/8 Threshold</span>
+              <span class="badge-subtext" id="metricSubtext3">Admissible & Consistent</span>
+            </div>
+          </div>
+
+          <div class="metric-card" id="metricCard4">
+            <div class="metric-header">
+              <span class="metric-label" id="metricLabel4">Autograder Pass Rate</span>
+              <div class="metric-icon">🏆</div>
+            </div>
+            <div class="metric-value" id="metricValue4">100<span style="font-size: 20px;">%</span></div>
+            <div class="metric-footer">
+              <span class="badge-up" id="metricBadge4">All Unit Tests Passed</span>
+              <span class="badge-subtext" id="metricSubtext4">Zero autograder penalties</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             SECTION: TEAM WORKLOAD OWNERSHIP (KNOW YOUR PART - 4 MEMBERS)
+             ========================================================================== -->
+        <section class="section-panel" id="section-team-workload">
+          <div class="panel-header">
+            <div class="panel-title-area">
+              <h2>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="var(--crimson-primary)">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Team Workload Ownership & Question Responsibility
+              </h2>
+              <p>Click on any member card to view their assigned questions, file locations, autograder test commands, and viva defense.</p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
+              SE3062 / IT3012 Group Project
+            </div>
+          </div>
+
+          <div class="team-cards-grid">
+            <!-- Member 1 Card -->
+            <div class="team-member-card" id="cardM1" data-member="m1">
+              <div>
+                <div class="card-top-header">
+                  <div class="member-avatar avatar-m1">M1</div>
+                  <div>
+                    <div class="member-card-name">S.P.R.H. Wijesiri</div>
+                    <div class="member-card-id">IT24100602 • Member 1</div>
+                    <div class="member-card-role" style="color: #38bdf8;">DFS & Problem Modeling Lead</div>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Assigned Questions</div>
+                  <div class="quest-badges-list">
+                    <span class="quest-badge m1">Q1: Depth-First Search</span>
+                    <span class="quest-badge m1">Q5: Corners Problem</span>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Core Files & ADTs</div>
+                  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                    • <code>search.py</code> (<code>depthFirstSearch</code>)<br>
+                    • <code>searchAgents.py</code> (<code>CornersProblem</code>)<br>
+                    • ADT: <code>util.Stack</code> (LIFO Policy)
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="member-card-section">
+                  <div class="section-label-mini">Autograder Command</div>
+                  <div class="command-snippet">
+                    <span>python autograder.py -q q1</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q1'); alert('Copied Q1 command!');">📋</button>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 12px; justify-content: center; font-size: 12px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
+                  Inspect Member 1 Part →
+                </button>
+              </div>
+            </div>
+
+            <!-- Member 2 Card -->
+            <div class="team-member-card active-selected" id="cardM2" data-member="m2">
+              <div>
+                <div class="card-top-header">
+                  <div class="member-avatar avatar-m2">M2</div>
+                  <div>
+                    <div class="member-card-name">Atheek Fareez</div>
+                    <div class="member-card-id">IT24103933 • Member 2</div>
+                    <div class="member-card-role" style="color: #34d399;">BFS & UCS Algorithm Lead</div>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Assigned Questions</div>
+                  <div class="quest-badges-list">
+                    <span class="quest-badge m2">Q2: Breadth-First Search</span>
+                    <span class="quest-badge m2">Q3: Uniform Cost Search</span>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Core Files & ADTs</div>
+                  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                    • <code>search.py</code> (<code>breadthFirstSearch</code>)<br>
+                    • <code>search.py</code> (<code>uniformCostSearch</code>)<br>
+                    • ADT: <code>util.Queue</code> & <code>util.PriorityQueue</code>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="member-card-section">
+                  <div class="section-label-mini">Autograder Commands</div>
+                  <div class="command-snippet">
+                    <span>python autograder.py -q q2</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q2'); alert('Copied Q2 command!');">📋</button>
+                  </div>
+                  <div class="command-snippet" style="margin-top: 4px;">
+                    <span>python autograder.py -q q3</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q3'); alert('Copied Q3 command!');">📋</button>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 12px; justify-content: center; font-size: 12px; border-color: rgba(16, 185, 129, 0.4); color: #34d399;">
+                  Inspect Member 2 Part →
+                </button>
+              </div>
+            </div>
+
+            <!-- Member 3 Card -->
+            <div class="team-member-card" id="cardM3" data-member="m3">
+              <div>
+                <div class="card-top-header">
+                  <div class="member-avatar avatar-m3">M3</div>
+                  <div>
+                    <div class="member-card-name">Wazni Ahamed</div>
+                    <div class="member-card-id">IT24103352 • Member 3</div>
+                    <div class="member-card-role" style="color: #c084fc;">A* & Problem State Lead</div>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Assigned Questions</div>
+                  <div class="quest-badges-list">
+                    <span class="quest-badge m3">Q4: A* Search</span>
+                    <span class="quest-badge m3">Q5: Corners State Space</span>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Core Files & ADTs</div>
+                  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                    • <code>search.py</code> (<code>aStarSearch</code>)<br>
+                    • <code>searchAgents.py</code> (<code>CornersProblem</code> state)<br>
+                    • Priority: $f(n) = g(n) + h(n)$
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="member-card-section">
+                  <div class="section-label-mini">Autograder Commands</div>
+                  <div class="command-snippet">
+                    <span>python autograder.py -q q4</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q4'); alert('Copied Q4 command!');">📋</button>
+                  </div>
+                  <div class="command-snippet" style="margin-top: 4px;">
+                    <span>python autograder.py -q q5</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q5'); alert('Copied Q5 command!');">📋</button>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 12px; justify-content: center; font-size: 12px; border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">
+                  Inspect Member 3 Part →
+                </button>
+              </div>
+            </div>
+
+            <!-- Member 4 Card -->
+            <div class="team-member-card" id="cardM4" data-member="m4">
+              <div>
+                <div class="card-top-header">
+                  <div class="member-avatar avatar-m4">M4</div>
+                  <div>
+                    <div class="member-card-name">Raashidh Rizvi</div>
+                    <div class="member-card-id">IT24104191 • Member 4</div>
+                    <div class="member-card-role" style="color: #f472b6;">Heuristic & Optimization Lead</div>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Assigned Questions</div>
+                  <div class="quest-badges-list">
+                    <span class="quest-badge m4">Q6: Corners Heuristic</span>
+                    <span class="quest-badge m4">Q7: Food Search Heuristic</span>
+                  </div>
+                </div>
+
+                <div class="member-card-section">
+                  <div class="section-label-mini">Core Files & Criteria</div>
+                  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                    • <code>searchAgents.py</code> (<code>cornersHeuristic</code>)<br>
+                    • <code>searchAgents.py</code> (<code>foodHeuristic</code>)<br>
+                    • Rules: Admissible ($h \le h^*$) & Consistent
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="member-card-section">
+                  <div class="section-label-mini">Autograder Commands</div>
+                  <div class="command-snippet">
+                    <span>python autograder.py -q q6</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q6'); alert('Copied Q6 command!');">📋</button>
+                  </div>
+                  <div class="command-snippet" style="margin-top: 4px;">
+                    <span>python autograder.py -q q7</span>
+                    <button class="copy-mini-btn" title="Copy command" onclick="event.stopPropagation(); navigator.clipboard.writeText('python autograder.py -q q7'); alert('Copied Q7 command!');">📋</button>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 12px; justify-content: center; font-size: 12px; border-color: rgba(236, 72, 153, 0.4); color: #f472b6;">
+                  Inspect Member 4 Part →
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             SYSTEM ARCHITECTURE FLOW (IMAGE 1 EXACT LAYOUT WITH MEMBER TAGS)
+             ========================================================================== -->
+        <section class="section-panel" id="section-architecture">
+          <div class="panel-header">
+            <div class="panel-title-area">
+              <h2>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="var(--crimson-primary)">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                Pac-Man System Architecture Flow (Image 1 Structure)
+              </h2>
+              <p>Every module in this pipeline links directly to a group member's implementation. Click any block to view code details.</p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">
+              Connected to search.py & searchAgents.py
+            </div>
+          </div>
+
+          <div class="diagram-interactive-canvas">
+            <div class="flow-container">
+              <!-- Level 1: Game Engine -->
+              <div class="sys-node node-engine" id="node-engine" data-node="engine">
+                <span class="node-title">Game engine</span>
+                <span class="node-subtitle">Maze layout, GameState</span>
+              </div>
+
+              <!-- Flow Arrow Between Engine & Agent -->
+              <div class="flow-arrow-down" style="font-size: 20px;">
+                <span>⇅</span>
+              </div>
+
+              <!-- Level 2: SearchAgent -->
+              <div class="sys-node node-agent" id="node-agent" data-node="agent">
+                <span class="node-title">SearchAgent</span>
+                <span class="node-subtitle">Makes problem, runs search</span>
+              </div>
+
+              <!-- Connector Arrow -->
+              <div class="flow-arrow-down">
+                <span>↓</span>
+              </div>
+
+              <!-- Level 3: Problem Layer Container -->
+              <div class="node-subgroup">
+                <div class="subgroup-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Problem layer (SearchProblem interface)</span>
+                  </div>
+                  <span style="font-size: 11px; color: var(--text-muted);">getStartState() • isGoalState() • getSuccessors()</span>
+                </div>
+                <div class="subgroup-grid cols-3">
+                  <div class="sys-node node-problem" id="node-pos" data-node="pos">
+                    <span class="node-title">Position problem</span>
+                    <span class="node-subtitle">State: (x, y)</span>
+                  </div>
+                  <div class="sys-node node-problem" id="node-corners" data-node="corners">
+                    <div class="node-member-tag m1" style="background: #0284c7;">M1 & M3 (Q5)</div>
+                    <span class="node-title">Corners problem</span>
+                    <span class="node-subtitle">Q5: visit 4 corners</span>
+                  </div>
+                  <div class="sys-node node-problem" id="node-food" data-node="food">
+                    <div class="node-member-tag m4" style="background: #db2777;">M4 (Q7)</div>
+                    <span class="node-title">Food problem</span>
+                    <span class="node-subtitle">Eat all food dots</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Connector Arrow -->
+              <div class="flow-arrow-down">
+                <span>↓</span>
+              </div>
+
+              <!-- Level 4: Search Algorithms Container -->
+              <div class="node-subgroup">
+                <div class="subgroup-header" style="justify-content: space-between;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                    <span>Search algorithms (search.py)</span>
+                  </div>
+                  <span style="font-size: 11px; color: #10b981; font-weight: 600;">Member 1 (Q1) • Member 2 (Q2, Q3) • Member 3 (Q4)</span>
+                </div>
+                <div class="subgroup-grid cols-4">
+                  <div class="sys-node node-algo" id="node-dfs" data-node="dfs">
+                    <div class="node-member-tag m1">M1: Wijesiri</div>
+                    <span class="node-title">Depth-first</span>
+                    <span class="node-subtitle">Q1: Stack (LIFO)</span>
+                  </div>
+                  <div class="sys-node node-algo" id="node-bfs" data-node="bfs">
+                    <div class="node-member-tag m2">M2: Atheek</div>
+                    <span class="node-title">Breadth-first</span>
+                    <span class="node-subtitle">Q2: Queue (FIFO)</span>
+                  </div>
+                  <div class="sys-node node-algo" id="node-ucs" data-node="ucs">
+                    <div class="node-member-tag m2">M2: Atheek</div>
+                    <span class="node-title">Uniform cost</span>
+                    <span class="node-subtitle">Q3: lowest g(n)</span>
+                  </div>
+                  <div class="sys-node node-algo" id="node-astar" data-node="astar">
+                    <div class="node-member-tag m3">M3: Wazni</div>
+                    <span class="node-title">A* search</span>
+                    <span class="node-subtitle">Q4: lowest g + h</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Level 5: Bottom Supporting Grid (util.py & Heuristics) -->
+              <div class="bottom-supporting-grid">
+                <div class="sys-node node-util" id="node-util" data-node="util">
+                  <span class="node-title">util.py</span>
+                  <span class="node-subtitle">Stack, Queue, PriorityQueue</span>
+                  <div style="font-size: 11px; color: var(--crimson-light); margin-top: 4px;">↑ Supplies Frontier Data Structures</div>
+                </div>
+                <div class="sys-node node-heuristics" id="node-heuristics" data-node="heuristics">
+                  <div class="node-member-tag m4">M4: Raashidh</div>
+                  <span class="node-title">Heuristics</span>
+                  <span class="node-subtitle">null, corners (Q6), food (Q7)</span>
+                  <div style="font-size: 11px; color: var(--crimson-light); margin-top: 4px;">↑ Supplies h(n) estimation to A*</div>
+                </div>
+              </div>
+
+              <!-- Returning Feedback Loop Badge -->
+              <div style="background: rgba(255, 42, 85, 0.12); border: 1px dashed var(--crimson-primary); border-radius: 8px; padding: 8px 16px; font-size: 12px; color: var(--text-accent); display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                <span>Plan Feedback:</span>
+                <strong>Plan: list of actions (['North', 'East', ...])</strong>
+                <span>➜ Returned directly to SearchAgent & executed step-by-step in Game engine</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Flow Inspector Drawer -->
+            <div class="inspector-card" id="inspectorDrawer">
+              <div class="inspector-icon" id="inspectorIcon">⚡</div>
+              <div class="inspector-body">
+                <h4 id="inspectorTitle">Select any block above to inspect responsibility</h4>
+                <p id="inspectorDesc">
+                  This system architecture diagram demonstrates how modular and decoupled the Berkeley Pac-Man AI search framework is across all 4 team members.
+                </p>
+                <div class="inspector-tags" id="inspectorTags">
+                  <span class="tag-pill">Developer: All Team</span>
+                  <span class="tag-pill">File: search.py & searchAgents.py</span>
+                  <span class="tag-pill">Autograder: 40/40 Total Points</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             INTERACTIVE MAZE PATHFINDING SIMULATOR & TELEMETRY
+             ========================================================================== -->
+        <section class="two-col-grid" id="section-simulator">
+          <!-- Canvas Visualizer -->
+          <div class="section-panel maze-container">
+            <div class="panel-header" style="width: 100%;">
+              <div class="panel-title-area">
+                <h2>
+                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="var(--crimson-primary)">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Interactive Search Simulator
+                </h2>
+                <p>Observe node expansion, frontier queues, and path generation for each member's algorithm.</p>
+              </div>
+              <div class="sim-btn-group">
+                <select class="algo-select" id="mazeSelect">
+                  <option value="medium">Medium Maze (Classic)</option>
+                  <option value="small">Small Maze</option>
+                  <option value="tiny">Tiny Maze</option>
+                </select>
+                <select class="algo-select" id="algoSelect">
+                  <option value="bfs">Breadth-First (BFS - Q2) [M2: Atheek]</option>
+                  <option value="ucs">Uniform Cost (UCS - Q3) [M2: Atheek]</option>
+                  <option value="dfs">Depth-First (DFS - Q1) [M1: Wijesiri]</option>
+                  <option value="astar">A* Search (AStar - Q4) [M3: Wazni]</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Canvas Element -->
+            <canvas id="mazeCanvas" width="560" height="340"></canvas>
+
+            <!-- Canvas Legend -->
+            <div style="display: flex; gap: 16px; font-size: 11px; margin-top: 12px; color: var(--text-secondary); flex-wrap: wrap; justify-content: center;">
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #facc15; border-radius: 50%; display: inline-block;"></span> Pac-Man (Start)</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block;"></span> Food / Goal</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #0c152c; border: 1px solid #3b82f6; border-radius: 2px; display: inline-block;"></span> Wall</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: rgba(168, 85, 247, 0.45); border-radius: 2px; display: inline-block;"></span> Visited / Closed</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: rgba(16, 185, 129, 0.6); border-radius: 2px; display: inline-block;"></span> Frontier Set</span>
+              <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; background: #fbbf24; border-radius: 2px; display: inline-block;"></span> Optimal Solution</span>
+            </div>
+
+            <!-- Sim Controls -->
+            <div class="sim-controls">
+              <div class="sim-btn-group">
+                <button class="btn btn-primary" id="btnPlay">
+                  <span id="playIcon">▶</span> <span id="playText">Start Search</span>
+                </button>
+                <button class="btn btn-secondary" id="btnStep">Step →</button>
+                <button class="btn btn-secondary" id="btnReset">Reset</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-secondary);">
+                <span>Speed:</span>
+                <input type="range" id="speedSlider" min="20" max="400" value="120" style="accent-color: var(--crimson-primary); width: 110px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Frontier & Execution Inspector -->
+          <div class="section-panel" style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="panel-header">
+              <div class="panel-title-area">
+                <h2>Real-Time Frontier Telemetry</h2>
+                <p id="simMemberAttribution">Active Algorithm: BFS • Lead: Atheek Fareez (Member 2)</p>
+              </div>
+              <span class="status-indicator" id="simStatusBadge">Ready</span>
+            </div>
+
+            <!-- Live counters -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div style="background: rgba(18, 7, 12, 0.7); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 11px; color: var(--text-muted);">Nodes Expanded</div>
+                <div id="statExpanded" style="font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: #fff;">0</div>
+              </div>
+              <div style="background: rgba(18, 7, 12, 0.7); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 11px; color: var(--text-muted);">Frontier Size</div>
+                <div id="statFrontier" style="font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: #10b981;">0</div>
+              </div>
+              <div style="background: rgba(18, 7, 12, 0.7); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 11px; color: var(--text-muted);">Path Cost g(n)</div>
+                <div id="statCost" style="font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: #fbbf24;">0</div>
+              </div>
+            </div>
+
+            <!-- Live Frontier Structure Stream -->
+            <div>
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; display: flex; justify-content: space-between;">
+                <span>Frontier Data Structure Content:</span>
+                <span id="dataStructureName" style="color: var(--crimson-light); font-family: var(--font-mono);">util.Queue (FIFO)</span>
+              </div>
+              <div id="frontierVisualList" style="background: #060204; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; min-height: 85px; max-height: 95px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; color: #34d399;">
+                [Waiting for search initialization...]
+              </div>
+            </div>
+
+            <!-- Live Step Log -->
+            <div style="flex: 1; display: flex; flex-direction: column;">
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">
+                Execution Step-by-Step Reasoner:
+              </div>
+              <div id="executionLog" style="flex: 1; min-height: 110px; max-height: 130px; background: #060204; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); line-height: 1.5;">
+                > Ready. Click "Start Search" or "Step →" to observe graph exploration.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             ALGORITHM BENCHMARK MATRIX (IMAGE 2 RECENT ACTIVITY / TABLE STYLE)
+             ========================================================================== -->
+        <section class="section-panel" id="section-analytics">
+          <div class="panel-header">
+            <div class="panel-title-area">
+              <h2>Algorithm Performance & Comparative Matrix</h2>
+              <p>Theoretical properties & empirical benchmarks across Berkeley Pac-Man Mazes</p>
+            </div>
+            <div style="font-size: 12px; color: #34d399; font-weight: 600;">
+              Autograder Tested: MediumMaze & BigMaze
+            </div>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Member Responsible</th>
+                  <th>Data Structure</th>
+                  <th>Complete?</th>
+                  <th>Optimal?</th>
+                  <th>MediumMaze Nodes</th>
+                  <th>Path Cost</th>
+                  <th>Core Formula / Principle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="rowDfs">
+                  <td><span class="badge-algo dfs">Depth-First (DFS - Q1)</span></td>
+                  <td><strong style="color: #38bdf8;">S.P.R.H. Wijesiri (M1)</strong></td>
+                  <td><code>util.Stack</code> (LIFO)</td>
+                  <td>Yes (finite)</td>
+                  <td>No</td>
+                  <td>146 nodes</td>
+                  <td>130 steps</td>
+                  <td>Explores deepest path first</td>
+                </tr>
+                <tr id="rowBfs" style="background: rgba(16, 185, 129, 0.08);">
+                  <td><span class="badge-algo bfs">Breadth-First (BFS - Q2)</span></td>
+                  <td><strong style="color: #34d399;">Atheek Fareez (M2)</strong></td>
+                  <td><code>util.Queue</code> (FIFO)</td>
+                  <td>Yes</td>
+                  <td>Yes (unit cost)</td>
+                  <td><strong>68 nodes</strong></td>
+                  <td><strong>68 steps</strong></td>
+                  <td>Expands shallowest level first</td>
+                </tr>
+                <tr id="rowUcs" style="background: rgba(245, 158, 11, 0.08);">
+                  <td><span class="badge-algo ucs">Uniform Cost (UCS - Q3)</span></td>
+                  <td><strong style="color: #fbbf24;">Atheek Fareez (M2)</strong></td>
+                  <td><code>util.PriorityQueue</code></td>
+                  <td>Yes</td>
+                  <td>Yes (any positive cost)</td>
+                  <td><strong>68 nodes</strong></td>
+                  <td><strong>68.0 cost</strong></td>
+                  <td>Expands lowest $g(n)$; goal test at dequeue</td>
+                </tr>
+                <tr id="rowAstar">
+                  <td><span class="badge-algo astar">A* Search (Q4)</span></td>
+                  <td><strong style="color: #c084fc;">Wazni Ahamed (M3)</strong></td>
+                  <td><code>util.PriorityQueue</code></td>
+                  <td>Yes</td>
+                  <td>Yes (if $h(n)$ consistent)</td>
+                  <td>54 nodes</td>
+                  <td>68 steps</td>
+                  <td>$f(n) = g(n) + h(n)$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             TEAM VIVA EXAM DEFENSE FLASHCARDS (ALL 4 MEMBERS COVERED)
+             ========================================================================== -->
+        <section class="section-panel" id="section-viva">
+          <div class="panel-header">
+            <div class="panel-title-area">
+              <h2>Team Viva Defense Hub (Key Oral Exam Questions for All Members)</h2>
+              <p>Direct, structured answers for examiners (Mr. Jeewaka Perera). Filter questions by individual team member.</p>
+            </div>
+            <div class="member-switcher-bar" style="padding: 4px 8px; box-shadow: none;">
+              <button class="member-pill-btn active" data-viva-filter="all" style="padding: 4px 10px; font-size: 11px;">All Questions</button>
+              <button class="member-pill-btn" data-viva-filter="m1" style="padding: 4px 10px; font-size: 11px;">Member 1 (DFS/Q5)</button>
+              <button class="member-pill-btn" data-viva-filter="m2" style="padding: 4px 10px; font-size: 11px;">Member 2 (BFS/UCS)</button>
+              <button class="member-pill-btn" data-viva-filter="m3" style="padding: 4px 10px; font-size: 11px;">Member 3 (A*/State)</button>
+              <button class="member-pill-btn" data-viva-filter="m4" style="padding: 4px 10px; font-size: 11px;">Member 4 (Heuristics)</button>
+            </div>
+          </div>
+
+          <div class="viva-cards-grid" id="vivaCardsGrid">
+            <!-- M1 Questions -->
+            <div class="viva-card" data-member="m1" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #38bdf8">M1 • Q1.</span> Why does DFS use a Stack (LIFO) and why is it not optimal?
+              </div>
+              <div class="viva-a">
+                DFS explores as deep as possible before backtracking. A <span class="viva-highlight">LIFO Stack</span> pops the most recently discovered successor, diving deep into one branch. It is <span class="viva-highlight">not optimal</span> because it returns the first path it stumbles into, which can be very long (e.g. 130 steps on MediumMaze compared to the optimal 68).
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m1" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #38bdf8">M1 • Q5.</span> In CornersProblem, why can't the state just be Pac-Man's (x, y) position?
+              </div>
+              <div class="viva-a">
+                A simple position `(x, y)` lacks memory of which corners have been visited. Two paths reaching `(1, 1)` are NOT equivalent if one has visited 3 corners and the other has visited 0. Therefore, the state must be a composite tuple: <span class="viva-highlight">((x, y), (c1_visited, c2_visited, c3_visited, c4_visited))</span>.
+              </div>
+            </div>
+
+            <!-- M2 Questions -->
+            <div class="viva-card" data-member="m2" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #34d399">M2 • Q2.</span> Why does BFS use a Queue (FIFO) while DFS uses a Stack?
+              </div>
+              <div class="viva-a">
+                BFS must explore nodes level-by-level in order of their shallowest depth. A <span class="viva-highlight">FIFO Queue</span> guarantees that all nodes at depth $d$ are popped and expanded before any node at depth $d+1$, guaranteeing minimal step count when all step costs are equal.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m2" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #34d399">M2 • Q3.</span> Why MUST UCS check the goal condition upon DEQUEUE rather than ENQUEUE?
+              </div>
+              <div class="viva-a">
+                In UCS, when a goal node is first generated and added to the Priority Queue (enqueued), there might still be an unexpanded path with lower cumulative cost $g(n)$ in the queue. <span class="viva-highlight">Only when dequeued from the priority queue is the path cost guaranteed to be minimal.</span> Checking on enqueue breaks optimality.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m2" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #34d399">M2 • Q3.</span> When step costs are equal ($c=1$), what is the relationship between BFS and UCS?
+              </div>
+              <div class="viva-a">
+                When all step costs are equal ($c=1$), path cost equals depth: $g(n) = \text{depth}(n)$. Therefore, <span class="viva-highlight">UCS behaves identically to BFS</span>, expanding nodes in strictly increasing order of depth and yielding the exact same 68 expanded nodes and path cost on MediumMaze.
+              </div>
+            </div>
+
+            <!-- M3 Questions -->
+            <div class="viva-card" data-member="m3" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #c084fc">M3 • Q4.</span> How does A* Search balance backward and forward costs?
+              </div>
+              <div class="viva-a">
+                A* evaluates frontier nodes by <span class="viva-highlight">$f(n) = g(n) + h(n)$</span>, where $g(n)$ is the exact backward cost accumulated from the start, and $h(n)$ is the forward heuristic estimate to the goal. When $h(n) = 0$ (the `nullHeuristic`), $f(n) = g(n)$, making A* behave exactly like UCS.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m3" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #c084fc">M3 • Q5.</span> Why must the CornersProblem state be immutable and hashable in Python?
+              </div>
+              <div class="viva-a">
+                Graph search algorithms track visited states in Python `set` or `dict` structures for $O(1)$ lookups. Python sets require objects to be <span class="viva-highlight">hashable</span>. If visited corners were stored in a mutable Python `list`, Python throws `TypeError: unhashable type: 'list'`. Hence, we use an immutable <span class="viva-highlight">tuple of booleans</span>.
+              </div>
+            </div>
+
+            <!-- M4 Questions -->
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q6.</span> What is the difference between an Admissible and a Consistent heuristic?
+              </div>
+              <div class="viva-a">
+                An <span class="viva-highlight">Admissible heuristic</span> never overestimates the true cost to reach the goal: $h(n) \le h^*(n)$. A <span class="viva-highlight">Consistent (monotonic) heuristic</span> also satisfies the triangle inequality: $h(A) \le c(A, B) + h(B)$. Consistency guarantees optimality in Graph Search without needing to reopen closed nodes.
+              </div>
+            </div>
+
+            <div class="viva-card" data-member="m4" onclick="this.classList.toggle('expanded')">
+              <div class="viva-q">
+                <span style="color: #f472b6">M4 • Q6 & Q7.</span> How do you design an admissible heuristic for Corners & Food search?
+              </div>
+              <div class="viva-a">
+                By solving a <span class="viva-highlight">relaxed subproblem</span> where maze walls are ignored. For corners, we take the Manhattan distance to the nearest unvisited corner plus the minimum spanning tree (MST) distance between remaining corners. Because removing walls can only decrease distance, it is guaranteed to be admissible ($h \le h^*$).
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
