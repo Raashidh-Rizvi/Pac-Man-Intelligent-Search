@@ -48,42 +48,52 @@ You can execute each search algorithm live in the Pac-Man graphic window to obse
 
 ### 1. Visualizing Depth-First Search (Q1)
 ```powershell
+python pacman.py -l tinyMaze -p SearchAgent -a fn=dfs
 python pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=dfs
 ```
 * **Visual Scene:** Pac-Man explores deep along a single corridor before backtracking when encountering dead ends. Red dots highlight expanded states.
 
 ### 2. Visualizing Breadth-First Search (Q2)
 ```powershell
 python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
+python pacman.py -l bigMaze -p SearchAgent -a fn=bfs -z .5
 ```
-* **Visual Scene:** Pac-Man explores outward in expanding concentric waves (shallowest nodes first), guaranteeing the shortest path length (68 steps).
+* **Visual Scene:** Pac-Man explores outward in expanding concentric waves (shallowest nodes first), guaranteeing the shortest path length (68 steps on `mediumMaze`).
 
 ### 3. Visualizing Uniform Cost Search (Q3)
 ```powershell
 python pacman.py -l mediumMaze -p SearchAgent -a fn=ucs
+python pacman.py -l mediumScaryMaze -p StayWestSearchAgent
+python pacman.py -l mediumScaryMaze -p StayEastSearchAgent
 ```
-* **Visual Scene:** Pac-Man prioritizes paths with the lowest accumulated cost \(g(n)\). On unit-cost mazes, UCS expands states in order of distance from start.
+* **Visual Scene:** Pac-Man prioritizes paths with the lowest accumulated cost \(g(n)\). On `mediumScaryMaze`, watch how `StayWestSearchAgent` or `StayEastSearchAgent` steer Pac-Man to take cheaper routes rather than shorter ones.
 
 ### 4. Visualizing A* Search with Manhattan Distance (Q4)
 ```powershell
 python pacman.py -l mediumMaze -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
 ```
-* **Visual Scene:** Guided by \(f(n) = g(n) + h(n)\), Pac-Man expands fewer nodes (221 vs 269 in BFS) by steering directly toward the goal dot.
+* **Visual Scene:** Guided by \(f(n) = g(n) + h(n)\), Pac-Man expands fewer nodes (221 vs 269 in BFS on `mediumMaze`) by steering directly toward the goal dot.
 
 ### 5. Visualizing Finding All Corners using BFS (Q5)
 ```powershell
 python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
 ```
 * **Visual Scene:** Pac-Man's state tracks visited corners. Watch Pac-Man systematically visit all 4 corners of the maze in sequence.
 
 ### 6. Visualizing Corners Problem with Admissible Tour Heuristic (Q6)
 ```powershell
-python pacman.py -l mediumCorners -p AStarCornersAgent
+python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5
 ```
 * **Visual Scene:** Using our all-pairs BFS shortest path tour heuristic, Pac-Man finds the optimal 106-step tour while expanding only **189 nodes** (far below the 1,200 threshold for maximum score).
 
 ### 7. Visualizing Eating All Dots with MST Food Heuristic (Q7)
 ```powershell
+python pacman.py -l testSearch -p AStarFoodSearchAgent
+python pacman.py -l trickySearch -p AStarFoodSearchAgent
+# or using generic SearchAgent parameters:
 python pacman.py -l trickySearch -p SearchAgent -a fn=astar,prob=FoodSearchProblem,heuristic=foodHeuristic
 ```
 * **Visual Scene:** Combining nearest-food maze distance with Prim's Minimum Spanning Tree (MST) cost, Pac-Man eats all food dots expanding only **255 nodes** (out of 15,000 max allowed).
@@ -94,7 +104,10 @@ python pacman.py -l bigSearch -p ClosestDotSearchAgent -z 0.5
 ```
 * **Visual Scene:** Pac-Man iteratively finds the path to the closest remaining food dot using repeated BFS.
 
-> **Tip:** Add `-q` to any command for fast headless execution without rendering graphics (e.g., `python pacman.py -q -l mediumMaze -p SearchAgent -a fn=bfs`).
+### 💡 GUI Display & Speed Options
+* `--frameTime <seconds>`: Control animation speed (e.g. `--frameTime 0` runs at maximum speed, `--frameTime 0.05` runs fast).
+* `-z <factor>`: Zoom maze window size (e.g. `-z 0.5` or `-z 0.8` for large mazes).
+* `-q`: Headless mode (runs without graphics for quick terminal output).
 
 ---
 
@@ -285,10 +298,18 @@ Implement graph-search DFS in `search.py`.
 - LIFO behavior;
 - returning the path of actions.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q1
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l tinyMaze -p SearchAgent -a fn=dfs
+python pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=dfs
 ```
 
 ### Success condition
@@ -310,10 +331,17 @@ Implement graph-search BFS in `search.py`.
 - FIFO behavior;
 - shortest-path reasoning for appropriate unit-cost problems.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q2
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
+python pacman.py -l bigMaze -p SearchAgent -a fn=bfs -z .5
 ```
 
 ### Key comparison
@@ -337,10 +365,18 @@ Implement UCS in `search.py` using actual accumulated path cost.
 - cost-sensitive node selection;
 - distinction between number of steps and actual path cost.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q3
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l mediumMaze -p SearchAgent -a fn=ucs
+python pacman.py -l mediumScaryMaze -p StayWestSearchAgent
+python pacman.py -l mediumScaryMaze -p StayEastSearchAgent
 ```
 
 ### Key concept
@@ -367,10 +403,17 @@ where:
 - `g(n)` is the accumulated cost;
 - `h(n)` estimates the remaining cost to the goal.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q4
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l mediumMaze -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
 ```
 
 ### Important relationship
@@ -423,10 +466,17 @@ Do not store:
 
 The state should be compact and hashable.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q5
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l tinyCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
+python pacman.py -l mediumCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
 ```
 
 ---
@@ -494,10 +544,16 @@ Performance
 
 An inadmissible heuristic receives zero for Q6, and a non-optimal path caused by the heuristic also causes zero regardless of node count.
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q6
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l mediumCorners -p AStarCornersAgent -z 0.5
 ```
 
 ---
@@ -527,10 +583,19 @@ The assignment evaluates node expansion on `trickySearch`:
 | ≤ 12000 | 6 / 8 |
 | ≤ 9000 | 8 / 8 |
 
-### Command
+### Commands
 
+**Autograder:**
 ```bash
 python autograder.py -q q7
+```
+
+**Run with Graphics (GUI):**
+```bash
+python pacman.py -l testSearch -p AStarFoodSearchAgent
+python pacman.py -l trickySearch -p AStarFoodSearchAgent
+# or using generic SearchAgent parameters:
+python pacman.py -l trickySearch -p SearchAgent -a fn=astar,prob=FoodSearchProblem,heuristic=foodHeuristic
 ```
 
 ---
