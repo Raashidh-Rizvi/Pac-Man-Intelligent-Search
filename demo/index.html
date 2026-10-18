@@ -66,6 +66,14 @@
             </a>
           </li>
           <li>
+            <a href="#section-heuristics" class="nav-item" data-nav="heuristics">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+              </svg>
+              <span>Heuristics Deep Dive</span>
+            </a>
+          </li>
+          <li>
             <a href="#section-viva" class="nav-item" data-nav="viva">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -682,59 +690,329 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Algorithm</th>
-                  <th>Member Responsible</th>
+                  <th>Q#</th>
+                  <th>Algorithm / Task</th>
+                  <th>Member</th>
                   <th>Data Structure</th>
                   <th>Complete?</th>
                   <th>Optimal?</th>
-                  <th>MediumMaze Nodes</th>
+                  <th>Test Layout</th>
+                  <th>Nodes Expanded</th>
                   <th>Path Cost</th>
-                  <th>Core Formula / Principle</th>
+                  <th>Score</th>
                 </tr>
               </thead>
               <tbody>
                 <tr id="rowDfs">
-                  <td><span class="badge-algo dfs">Depth-First (DFS - Q1)</span></td>
-                  <td><strong style="color: #38bdf8;">S.P.R.H. Wijesiri (M1)</strong></td>
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q1</span></td>
+                  <td><span class="badge-algo dfs">Depth-First Search</span></td>
+                  <td><strong style="color: #38bdf8;">Wijesiri (M1)</strong></td>
                   <td><code>util.Stack</code> (LIFO)</td>
                   <td>Yes (finite)</td>
                   <td>No</td>
+                  <td><code>mediumMaze</code></td>
                   <td>146 nodes</td>
                   <td>130 steps</td>
-                  <td>Explores deepest path first</td>
+                  <td><span style="color:#34d399;font-weight:700;">3/3</span></td>
                 </tr>
                 <tr id="rowBfs" style="background: rgba(16, 185, 129, 0.08);">
-                  <td><span class="badge-algo bfs">Breadth-First (BFS - Q2)</span></td>
-                  <td><strong style="color: #34d399;">Atheek Fareez (M2)</strong></td>
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q2</span></td>
+                  <td><span class="badge-algo bfs">Breadth-First Search</span></td>
+                  <td><strong style="color: #34d399;">Atheek (M2)</strong></td>
                   <td><code>util.Queue</code> (FIFO)</td>
                   <td>Yes</td>
                   <td>Yes (unit cost)</td>
+                  <td><code>mediumMaze</code></td>
                   <td><strong>68 nodes</strong></td>
                   <td><strong>68 steps</strong></td>
-                  <td>Expands shallowest level first</td>
+                  <td><span style="color:#34d399;font-weight:700;">3/3</span></td>
                 </tr>
                 <tr id="rowUcs" style="background: rgba(245, 158, 11, 0.08);">
-                  <td><span class="badge-algo ucs">Uniform Cost (UCS - Q3)</span></td>
-                  <td><strong style="color: #fbbf24;">Atheek Fareez (M2)</strong></td>
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q3</span></td>
+                  <td><span class="badge-algo ucs">Uniform Cost Search</span></td>
+                  <td><strong style="color: #fbbf24;">Atheek (M2)</strong></td>
                   <td><code>util.PriorityQueue</code></td>
                   <td>Yes</td>
-                  <td>Yes (any positive cost)</td>
+                  <td>Yes (any +cost)</td>
+                  <td><code>mediumMaze</code></td>
                   <td><strong>68 nodes</strong></td>
                   <td><strong>68.0 cost</strong></td>
-                  <td>Expands lowest $g(n)$; goal test at dequeue</td>
+                  <td><span style="color:#34d399;font-weight:700;">3/3</span></td>
                 </tr>
                 <tr id="rowAstar">
-                  <td><span class="badge-algo astar">A* Search (Q4)</span></td>
-                  <td><strong style="color: #c084fc;">Wazni Ahamed (M3)</strong></td>
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q4</span></td>
+                  <td><span class="badge-algo astar">A* Search (Manhattan)</span></td>
+                  <td><strong style="color: #c084fc;">Wazni (M3)</strong></td>
                   <td><code>util.PriorityQueue</code></td>
                   <td>Yes</td>
-                  <td>Yes (if $h(n)$ consistent)</td>
-                  <td>54 nodes</td>
+                  <td>Yes (consistent h)</td>
+                  <td><code>mediumMaze</code></td>
+                  <td><strong>221 nodes</strong></td>
                   <td>68 steps</td>
-                  <td>$f(n) = g(n) + h(n)$</td>
+                  <td><span style="color:#34d399;font-weight:700;">3/3</span></td>
+                </tr>
+                <tr id="rowCorners" style="background: rgba(236,72,153,0.07);">
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q5</span></td>
+                  <td><span class="badge-algo" style="background:rgba(236,72,153,0.18);color:#f472b6;border:1px solid rgba(236,72,153,0.4);">Corners Problem</span></td>
+                  <td><strong style="color: #f472b6;">Wijesiri+Wazni (M1+M3)</strong></td>
+                  <td><code>state=(pos, visited_tuple)</code></td>
+                  <td>Yes</td>
+                  <td>Yes (BFS)</td>
+                  <td><code>tinyCorners</code></td>
+                  <td><strong>252 nodes</strong></td>
+                  <td>28 steps</td>
+                  <td><span style="color:#34d399;font-weight:700;">3/3</span></td>
+                </tr>
+                <tr id="rowCornersH" style="background: rgba(236,72,153,0.12);">
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q6</span></td>
+                  <td><span class="badge-algo" style="background:rgba(236,72,153,0.25);color:#f472b6;border:1px solid rgba(236,72,153,0.5);">Corners Heuristic (BFS Tour)</span></td>
+                  <td><strong style="color: #f472b6;">Raashidh (M4)</strong></td>
+                  <td><code>A* + cornersHeuristic</code></td>
+                  <td>Yes</td>
+                  <td>Yes (admissible)</td>
+                  <td><code>mediumCorners</code></td>
+                  <td><strong style="color:#34d399;">189 nodes ✓</strong></td>
+                  <td>106 steps</td>
+                  <td><span style="color:#34d399;font-weight:700;">8/8</span></td>
+                </tr>
+                <tr id="rowFoodH" style="background: rgba(234,179,8,0.07);">
+                  <td><span style="font-family:var(--font-mono);color:var(--crimson-light);font-weight:700;">Q7</span></td>
+                  <td><span class="badge-algo" style="background:rgba(234,179,8,0.18);color:#fbbf24;border:1px solid rgba(234,179,8,0.4);">Food Heuristic (MST Prim's)</span></td>
+                  <td><strong style="color: #fbbf24;">Raashidh (M4)</strong></td>
+                  <td><code>A* + foodHeuristic</code></td>
+                  <td>Yes</td>
+                  <td>Yes (consistent)</td>
+                  <td><code>trickySearch</code></td>
+                  <td><strong style="color:#34d399;">255 nodes ✓</strong></td>
+                  <td>60 steps</td>
+                  <td><span style="color:#34d399;font-weight:700;">8/8</span></td>
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- Q6 vs Q7 comparison mini-panel -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;">
+            <div style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.3);border-radius:12px;padding:16px;">
+              <div style="font-size:11px;font-weight:700;color:#f472b6;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Q6 — Corners Heuristic Performance</div>
+              <div style="font-size:28px;font-weight:800;font-family:var(--font-heading);color:#fff;">189 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">nodes expanded</span></div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;line-height:1.5;">
+                Threshold for full marks: <strong style="color:#34d399;">&le; 1,200 nodes</strong><br>
+                Our result: <strong style="color:#34d399;">189 nodes</strong> — 6.3× better than needed
+              </div>
+              <div style="margin-top:10px;background:rgba(0,0,0,0.3);border-radius:6px;height:8px;overflow:hidden;">
+                <div style="width:16%;height:100%;background:linear-gradient(90deg,#ec4899,#f472b6);border-radius:6px;"></div>
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">16% of 1,200-node threshold used</div>
+            </div>
+            <div style="background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.3);border-radius:12px;padding:16px;">
+              <div style="font-size:11px;font-weight:700;color:#fbbf24;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Q7 — Food MST Heuristic Performance</div>
+              <div style="font-size:28px;font-weight:800;font-family:var(--font-heading);color:#fff;">255 <span style="font-size:13px;font-weight:500;color:var(--text-muted);">nodes expanded</span></div>
+              <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;line-height:1.5;">
+                Threshold for full marks: <strong style="color:#34d399;">&le; 9,000 nodes</strong><br>
+                Our result: <strong style="color:#34d399;">255 nodes</strong> — 35× better than needed
+              </div>
+              <div style="margin-top:10px;background:rgba(0,0,0,0.3);border-radius:6px;height:8px;overflow:hidden;">
+                <div style="width:3%;height:100%;background:linear-gradient(90deg,#eab308,#fbbf24);border-radius:6px;"></div>
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">3% of 9,000-node threshold used</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================================================
+             Q6 & Q7 HEURISTICS DEEP DIVE (NEW SECTION)
+             ========================================================================== -->
+        <section class="section-panel" id="section-heuristics">
+          <div class="panel-header">
+            <div class="panel-title-area">
+              <h2>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="var(--crimson-primary)">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+                Q6 &amp; Q7 Heuristics Deep Dive — How They Work
+              </h2>
+              <p>Detailed technical breakdown of the Corners Tour Heuristic (Q6) and Food MST Heuristic (Q7) — implemented by <strong style="color:#f472b6;">Raashidh Rizvi (M4)</strong> in <code>searchAgents.py</code>.</p>
+            </div>
+            <div style="font-size: 12px; color: #f472b6; font-weight: 600;">Member 4 · IT24104191 · Full 8/8 on both</div>
+          </div>
+
+          <!-- Heuristic Requirements Banner -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+            <div style="background:rgba(255,42,85,0.1);border:1px solid rgba(255,42,85,0.3);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:22px;margin-bottom:4px;">✓</div>
+              <div style="font-size:12px;font-weight:700;color:var(--crimson-light);">Admissible</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">h(n) ≤ h*(n)<br>Never overestimates</div>
+            </div>
+            <div style="background:rgba(255,42,85,0.1);border:1px solid rgba(255,42,85,0.3);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:22px;margin-bottom:4px;">✓</div>
+              <div style="font-size:12px;font-weight:700;color:var(--crimson-light);">Consistent</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">h(n) ≤ c(n,n') + h(n')<br>Triangle inequality</div>
+            </div>
+            <div style="background:rgba(255,42,85,0.1);border:1px solid rgba(255,42,85,0.3);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:22px;margin-bottom:4px;">✓</div>
+              <div style="font-size:12px;font-weight:700;color:var(--crimson-light);">Non-negative</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">h(n) ≥ 0<br>Always valid</div>
+            </div>
+            <div style="background:rgba(255,42,85,0.1);border:1px solid rgba(255,42,85,0.3);border-radius:10px;padding:14px;text-align:center;">
+              <div style="font-size:22px;margin-bottom:4px;">✓</div>
+              <div style="font-size:12px;font-weight:700;color:var(--crimson-light);">h(goal) = 0</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Returns 0 at<br>completed state</div>
+            </div>
+          </div>
+
+          <!-- Q6 Deep Dive -->
+          <div style="background:rgba(236,72,153,0.06);border:1px solid rgba(236,72,153,0.25);border-radius:14px;padding:24px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+              <div style="background:linear-gradient(135deg,#be185d,#ec4899);border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;font-family:var(--font-heading);flex-shrink:0;">Q6</div>
+              <div>
+                <div style="font-size:18px;font-weight:700;color:#fff;">Corners Heuristic — BFS All-Pairs Tour</div>
+                <div style="font-size:12px;color:#f472b6;">Function: <code>cornersHeuristic(state, problem)</code> in <code>searchAgents.py</code></div>
+              </div>
+              <div style="margin-left:auto;text-align:right;">
+                <div style="font-size:24px;font-weight:800;color:#34d399;">189</div>
+                <div style="font-size:11px;color:var(--text-muted);">nodes expanded<br>(max 1,200 for 8/8)</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+              <!-- What problem Q6 solves -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:16px;">
+                <div style="font-size:11px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">What Q6 Solves</div>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Given a <code>CornersProblem</code> state <code>(position, visitedCornersTuple)</code>, estimate the minimum remaining steps Pac-Man needs to visit all unvisited corners. A plain Manhattan distance is too weak — maze walls make actual distances longer.</p>
+                <div style="margin-top:10px;font-size:12px;font-family:var(--font-mono);background:rgba(0,0,0,0.4);border-radius:8px;padding:10px;color:#f9a8d4;">
+                  state = ((x,y), (c1, c2, c3, c4))<br>
+                  where c_i ∈ {True, False}<br>
+                  outstanding = corners where c_i = False
+                </div>
+              </div>
+              <!-- Step-by-step algorithm -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:16px;">
+                <div style="font-size:11px;font-weight:700;color:#f472b6;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Algorithm Steps</div>
+                <ol style="font-size:12px;color:var(--text-secondary);line-height:1.8;padding-left:16px;">
+                  <li>If no corners remaining → return <strong style="color:#34d399;">0</strong></li>
+                  <li>Call <code>cornerMazeDistances()</code> — BFS from each corner to every reachable cell (cached once per problem)</li>
+                  <li>Try every permutation of remaining corners</li>
+                  <li>For each ordering: sum<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>dist(position → first_corner)</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;+ dist(corner₁ → corner₂) + …</li>
+                  <li>Return the <strong style="color:#f472b6;">minimum</strong> total over all orderings</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- How cornerMazeDistances works -->
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(236,72,153,0.2);border-radius:10px;padding:16px;margin-bottom:14px;">
+              <div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:10px;">🔍 cornerMazeDistances() — BFS Pre-computation</div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:10px;">
+                This helper runs <strong>one BFS from each of the 4 corners</strong>, recording the true maze distance to every reachable cell. The result is a dict: <code>{ corner → { (x,y) → distance } }</code>.
+                It is computed once and cached on the <code>problem</code> object as <code>problem._cornerMazeDistances</code>, so repeated heuristic calls pay zero overhead.
+              </p>
+              <div style="font-size:12px;font-family:var(--font-mono);background:rgba(0,0,0,0.5);border-radius:8px;padding:12px;color:#fda4af;line-height:1.7;">
+                <span style="color:#7dd3fc;">for</span> corner <span style="color:#7dd3fc;">in</span> problem.corners:<br>
+                &nbsp;&nbsp;dist = {corner: 0}<br>
+                &nbsp;&nbsp;queue = BFS_queue()<br>
+                &nbsp;&nbsp;<span style="color:#7dd3fc;">while</span> not queue.isEmpty():<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;curr, d = queue.pop()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">for</span> neighbor <span style="color:#7dd3fc;">in</span> valid_moves(curr, walls):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7dd3fc;">if</span> neighbor not in dist:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist[neighbor] = d + 1; queue.push(...)
+              </div>
+            </div>
+
+            <!-- Admissibility & Consistency proof -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:14px;">
+                <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:8px;">✓ Why It's Admissible</div>
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Any optimal solution must physically visit all outstanding corners in some order. The cost of that solution is at least the BFS maze distance of the cheapest such ordering. Therefore <strong>h(n) ≤ h*(n)</strong> always holds — we never overestimate.</p>
+              </div>
+              <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:14px;">
+                <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:8px;">✓ Why It's Consistent</div>
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;">The heuristic is the exact optimal tour cost in a relaxed graph (corners only). For a non-corner move, the triangle inequality gives <strong>h(s) ≤ 1 + h(s')</strong>. For a corner-eating move, visiting that corner first is a valid ordering, so <strong>h(s) ≤ 1 + h(s')</strong> still holds.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q7 Deep Dive -->
+          <div style="background:rgba(234,179,8,0.06);border:1px solid rgba(234,179,8,0.25);border-radius:14px;padding:24px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+              <div style="background:linear-gradient(135deg,#b45309,#eab308);border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;font-family:var(--font-heading);flex-shrink:0;">Q7</div>
+              <div>
+                <div style="font-size:18px;font-weight:700;color:#fff;">Food Heuristic — Nearest Dot + Prim's MST</div>
+                <div style="font-size:12px;color:#fbbf24;">Function: <code>foodHeuristic(state, problem)</code> in <code>searchAgents.py</code></div>
+              </div>
+              <div style="margin-left:auto;text-align:right;">
+                <div style="font-size:24px;font-weight:800;color:#34d399;">255</div>
+                <div style="font-size:11px;color:var(--text-muted);">nodes expanded<br>(max 9,000 for 8/8)</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+              <!-- What problem Q7 solves -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:16px;">
+                <div style="font-size:11px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">What Q7 Solves</div>
+                <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;">Given <code>(pacmanPosition, foodGrid)</code>, estimate the minimum maze steps needed to eat every remaining food dot. The key insight: all food dots are nodes; Pac-Man must form a tour that connects them all — this is structurally similar to the Travelling Salesman Problem.</p>
+                <div style="margin-top:10px;font-size:12px;font-family:var(--font-mono);background:rgba(0,0,0,0.4);border-radius:8px;padding:10px;color:#fde68a;">
+                  state = (position, foodGrid)<br>
+                  foodList = foodGrid.asList()<br>
+                  h = closestFood + MST(foodList)
+                </div>
+              </div>
+              <!-- Two-part formula -->
+              <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:16px;">
+                <div style="font-size:11px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">Two-Part Heuristic Formula</div>
+                <div style="font-size:13px;font-weight:700;color:#fff;text-align:center;background:rgba(0,0,0,0.4);border-radius:8px;padding:12px;margin-bottom:12px;">
+                  h(n) = dist(pos → nearest_food) + MST_cost(remaining_food)
+                </div>
+                <ul style="font-size:12px;color:var(--text-secondary);line-height:1.8;list-style:disc;padding-left:16px;">
+                  <li><strong style="color:#fbbf24;">Part 1:</strong> maze distance (BFS) from Pac-Man to the nearest food dot</li>
+                  <li><strong style="color:#fbbf24;">Part 2:</strong> Prim's MST cost connecting all remaining food dots using BFS maze distances as edge weights</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Prim's MST explanation -->
+            <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(234,179,8,0.2);border-radius:10px;padding:16px;margin-bottom:14px;">
+              <div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:10px;">🌳 Prim's MST Algorithm on Food Dots</div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.7;margin-bottom:10px;">
+                The <strong>Minimum Spanning Tree (MST)</strong> cost is a lower bound on the cost of visiting all food dots, because any path that visits all dots must include edges spanning every dot, and the MST is the cheapest such spanning structure.
+              </p>
+              <div style="font-size:12px;font-family:var(--font-mono);background:rgba(0,0,0,0.5);border-radius:8px;padding:12px;color:#fef08a;line-height:1.7;">
+                <span style="color:#7dd3fc;">start</span> = foodList[0]<br>
+                min_dist = { food: mazeDistance(start, food) <span style="color:#7dd3fc;">for</span> food <span style="color:#7dd3fc;">in</span> remaining }<br>
+                <span style="color:#7dd3fc;">while</span> unvisited nodes remain:<br>
+                &nbsp;&nbsp;next_node = argmin(min_dist)  <span style="color:#6b7280;"># cheapest reachable dot</span><br>
+                &nbsp;&nbsp;mst_cost += min_dist[next_node]<br>
+                &nbsp;&nbsp;<span style="color:#7dd3fc;">for</span> node <span style="color:#7dd3fc;">in</span> unvisited:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min_dist[node] = min(min_dist[node], mazeDistance(next_node, node))
+              </div>
+              <p style="font-size:12px;color:var(--text-muted);margin-top:10px;">Maze distances are computed lazily with BFS and cached in <code>problem.heuristicInfo['dist_cache']</code> for O(1) re-use across heuristic calls.</p>
+            </div>
+
+            <!-- Admissibility & Consistency proof -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:14px;">
+                <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:8px;">✓ Why It's Admissible</div>
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Any complete solution path must: (1) reach the nearest dot (at least <em>closest_dist</em> steps), then (2) connect every remaining dot — a task whose cost is at least the MST of those dots. So <strong>h(n) ≤ true cost</strong> always.</p>
+              </div>
+              <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:14px;">
+                <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:8px;">✓ Why It's Consistent</div>
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;">Each step at most decreases h by 1: eating a food reduces the MST by at most the edge weight between that food and the nearest remaining dot. The triangle inequality guarantees <strong>h(s) ≤ 1 + h(s')</strong> for every transition.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Takeaway: Q6 vs Q7 design contrast -->
+          <div style="background:rgba(255,42,85,0.07);border:1px dashed rgba(255,42,85,0.35);border-radius:12px;padding:16px;">
+            <div style="font-size:13px;font-weight:700;color:var(--crimson-light);margin-bottom:10px;">⚡ Design Contrast: Q6 vs Q7</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:12px;color:var(--text-secondary);line-height:1.7;">
+              <div>
+                <strong style="color:#f472b6;">Q6 Corners:</strong> At most 4 corners → at most 4! = 24 orderings. We enumerate all permutations to find the exact optimal tour, making the heuristic maximally tight (equals true h* in the relaxed graph).
+              </div>
+              <div>
+                <strong style="color:#fbbf24;">Q7 Food:</strong> Up to dozens of food dots → exact TSP is NP-hard. We use the <strong>MST relaxation</strong> (polynomial time with Prim's) as a tight lower bound. The MST cost is always ≤ the optimal tour, preserving admissibility.
+              </div>
+            </div>
           </div>
         </section>
 
